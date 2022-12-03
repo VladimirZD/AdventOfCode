@@ -41,11 +41,6 @@ namespace AdventOfCode.AocTasks2022
                 for (var i= 0;i< halfLen; i++)
                 {
                     var gift = giftData[i];
-            
-
-                    var d1 = giftData[0..halfLen];
-                    var d2 = giftData[halfLen..];
-            
                     if (giftData.IndexOf(giftData[i], halfLen)!=-1)
                     {
                         if (!usedLetters.Contains(gift))
