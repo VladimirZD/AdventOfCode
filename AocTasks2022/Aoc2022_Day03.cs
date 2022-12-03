@@ -24,7 +24,7 @@ namespace AdventOfCode.AocTasks2022
         }
         static string[] LoadTaskinput(string filePath)
         {
-            //var input = "vJrwpWtwJgWrhcsFMMfFFhFp\njqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\nPmmdzqPrVvPwwTWBwg\nwMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\nttgJtRGJQctTZtZT\nCrZsJsPPZsGzwwsLwLmpwMDw";
+            
             var input = System.IO.File.ReadAllText(filePath);
             var data = input.Split("\n").Where(l => !string.IsNullOrEmpty(l)).ToArray();
             return data;
@@ -41,12 +41,11 @@ namespace AdventOfCode.AocTasks2022
                 for (var i= 0;i< halfLen; i++)
                 {
                     var gift = giftData[i];
-                    //var p1  vintersect(hs(l[..mid]), hs(l[mid..])));
+            
 
                     var d1 = giftData[0..halfLen];
                     var d2 = giftData[halfLen..];
-                    var test = d1.Intersect(d2);
-                    //[2..^1]
+            
                     if (giftData.IndexOf(giftData[i], halfLen)!=-1)
                     {
                         if (!usedLetters.Contains(gift))
