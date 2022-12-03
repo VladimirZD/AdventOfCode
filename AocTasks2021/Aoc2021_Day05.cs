@@ -22,15 +22,15 @@ namespace AdventOfCode.AocTasks2021
 
         public Aoc2021_Day05(string filePath)
         {
-            Points1 = LoadTaskinput(filePath,false);
-            Points2 = LoadTaskinput(filePath,true);
+            Points1 = LoadTaskinput(filePath, false);
+            Points2 = LoadTaskinput(filePath, true);
         }
 
         static List<List<Point>> LoadTaskinput(string filePath, bool includeDiagonals)
         {
             List<List<Point>> retValue = new();
-            var data = System.IO.File.ReadAllLines(filePath).Where(i=>!string.IsNullOrEmpty(i));
-            
+            var data = System.IO.File.ReadAllLines(filePath).Where(i => !string.IsNullOrEmpty(i));
+
             foreach (var item in data)
             {
                 var pointData = item.Split(", ->".ToArray(), StringSplitOptions.RemoveEmptyEntries).Select(i => int.Parse(i)).ToArray();
@@ -62,7 +62,7 @@ namespace AdventOfCode.AocTasks2021
         {
             var retValue = Solve(Points1);
             return retValue.ToString();
-            
+
         }
         string IAocTask.Solve2()
         {

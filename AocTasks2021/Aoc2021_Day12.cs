@@ -19,7 +19,7 @@ namespace AdventOfCode.AocTasks2021
             {
                 START
             };
-            var retValue= WalkThePath(START, Caves, visitedCaves, true);
+            var retValue = WalkThePath(START, Caves, visitedCaves, true);
             return retValue.ToString();
         }
         string IAocTask.Solve2()

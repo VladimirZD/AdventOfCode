@@ -6,7 +6,7 @@ namespace AdventOfCode.AocTasks2021
     [AocTask(2021, 14)]
     public class Aoc2021_Day14 : IAocTask
     {
-        private Dictionary<string, string> Transformations{ get; set; }
+        private Dictionary<string, string> Transformations { get; set; }
         private Dictionary<string, long> ElementPairs { get; set; }
         private string StartTemplate { get; set; }
         public Aoc2021_Day14(string filePath)
@@ -15,7 +15,7 @@ namespace AdventOfCode.AocTasks2021
         }
         string IAocTask.Solve1()
         {
-            var retValue= 0L;
+            var retValue = 0L;
             var step = 0;
             var maxStep = 40;
 
@@ -55,7 +55,7 @@ namespace AdventOfCode.AocTasks2021
         }
         string IAocTask.Solve2()
         {
-            var retValue= GetMaxMinusMin(ElementPairs, StartTemplate);
+            var retValue = GetMaxMinusMin(ElementPairs, StartTemplate);
             return retValue.ToString();
         }
         static long GetMaxMinusMin(Dictionary<string, long> elementPairs, string startTemplate)

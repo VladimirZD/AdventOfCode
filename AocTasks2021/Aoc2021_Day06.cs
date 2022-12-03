@@ -1,6 +1,5 @@
 ﻿using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
-using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace AdventOfCode.AocTasks2021
@@ -8,10 +7,10 @@ namespace AdventOfCode.AocTasks2021
     [AocTask(2021, 6)]
     public class Aoc2021_Day06 : IAocTask
     {
-        public List<int> Lanterns{ get; set; }
+        public List<int> Lanterns { get; set; }
         public Aoc2021_Day06(string filePath)
         {
-            Lanterns= LoadTaskinput(filePath);
+            Lanterns = LoadTaskinput(filePath);
         }
         static List<int> LoadTaskinput(string filePath)
         {

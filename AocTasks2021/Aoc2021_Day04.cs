@@ -30,7 +30,7 @@
 //        {
 //            List<List<Point>> retValue = new();
 //            var data = System.IO.File.ReadAllLines(filePath).Where(i=>!string.IsNullOrEmpty(i));
-            
+
 //            foreach (var item in data)
 //            {
 //                var pointData = item.Split(", ->".ToArray(), StringSplitOptions.RemoveEmptyEntries).Select(i => int.Parse(i)).ToArray();
@@ -63,7 +63,7 @@
 //        {
 //            var retValue = Solve(Points1);
 //            return retValue.ToString();
-            
+
 //        }
 //        string IAocTask.Solve2()
 //        {

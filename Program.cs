@@ -29,13 +29,11 @@ namespace AdventOfCode
             DownloadTaskData(tasks, cookieData);
             RunTasks(tasks);
         }
-
         private static void RunTasks(List<Type> tasks)
         {
             Stopwatch stopWatch = new();
             foreach (var task in tasks)
             {
-
                 var aocTaskAttribute = task.GetCustomAttribute<AocTask>();
                 if (aocTaskAttribute != null)
                 {
@@ -99,7 +97,7 @@ namespace AdventOfCode
                 string filePath = $@"{AppContext.BaseDirectory}TaskData\{fileName}";
                 string msg = $"File {fileName} exist, skipping download";
                 if (!File.Exists(filePath))
-                { 
+                {
                     var url = $"https://adventofcode.com/{aocTaskAttribute.Year}/day/{aocTaskAttribute.Day}/input";
                     var downloadTask = GenerateTaskDataFile(url, cookieData);
                     downloadTask.Wait();

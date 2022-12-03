@@ -7,7 +7,7 @@ namespace AdventOfCode.AocTasks2021
     [AocTask(2021, 9)]
     public class Aoc2021_Day09 : IAocTask
     {
-        public record  Cell
+        public record Cell
         {
             public int X;
             public int Y;
@@ -22,13 +22,13 @@ namespace AdventOfCode.AocTasks2021
                 Value = value;
             }
         }
-        public List<Cell> Cells{ get; set; }
+        public List<Cell> Cells { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public List<Cell> MinPoints { get; set; }
         public Aoc2021_Day09(string filePath)
         {
-            Cells= LoadTaskinput(filePath);
+            Cells = LoadTaskinput(filePath);
             MinPoints = new List<Cell>();
         }
         private List<Cell> LoadTaskinput(string filePath)
@@ -65,7 +65,7 @@ namespace AdventOfCode.AocTasks2021
                     MinPoints.Add(cell);
                 }
             }
-            var retValue= MinPoints.Sum(c => c.Value + 1);
+            var retValue = MinPoints.Sum(c => c.Value + 1);
             return retValue.ToString();
         }
         string IAocTask.Solve2()
@@ -76,7 +76,7 @@ namespace AdventOfCode.AocTasks2021
                 var neighbours = GetValidNeighbours(Cells, cell, int.MaxValue).OrderBy(n => n.X).ThenBy(n => n.Y);
                 basins.Add(neighbours.Where(n => n.Value != 9).Count());
             }
-            var retValue= basins.OrderByDescending(b => b).Take(3).ToList().Aggregate(1, (res, n) => res * n).ToString();
+            var retValue = basins.OrderByDescending(b => b).Take(3).ToList().Aggregate(1, (res, n) => res * n).ToString();
             return retValue.ToString();
         }
         private List<Cell> GetValidNeighbours(List<Cell> cells, Cell start, int maxDistance)

@@ -18,7 +18,7 @@ namespace AdventOfCode.AocTasks2021
     [AocTask(2021, 13)]
     public class Aoc2021_Day13 : IAocTask
     {
-        public List<Point> Points{ get; set; }
+        public List<Point> Points { get; set; }
         public List<string> Instructions { get; set; }
         public Aoc2021_Day13(string filePath)
         {
@@ -42,15 +42,15 @@ namespace AdventOfCode.AocTasks2021
         }
         string IAocTask.Solve2()
         {
-            var printData= GetPrintData();
-            return Environment.NewLine+string.Join(Environment.NewLine, printData).ToString()+Environment.NewLine;
+            var printData = GetPrintData();
+            return Environment.NewLine + string.Join(Environment.NewLine, printData).ToString() + Environment.NewLine;
         }
         private void LoadTaskInput(string filePath)
         {
             var data = File.ReadLines(filePath).ToList();
             var splitLineIndex = data.IndexOf(data.Where(l => l == "").Single());
             Instructions = data.Skip(splitLineIndex + 1).Take(data.Count - splitLineIndex).Select(i => i.Replace("fold along ", "")).ToList();
-            Points= data.Take(splitLineIndex).SelectMany(i => i.Split("\r\n")).Select(p => new Point(int.Parse(p.Split(',')[0]), int.Parse(p.Split(',')[1]), "#")).OrderBy(p => p.Y).ThenBy(p => p.X).ToList();
+            Points = data.Take(splitLineIndex).SelectMany(i => i.Split("\r\n")).Select(p => new Point(int.Parse(p.Split(',')[0]), int.Parse(p.Split(',')[1]), "#")).OrderBy(p => p.Y).ThenBy(p => p.X).ToList();
         }
         //static List<string> GetPrintData(string description, List<Point> points)
         private List<string> GetPrintData()
@@ -68,7 +68,7 @@ namespace AdventOfCode.AocTasks2021
                 }
                 retValue.Add(line);
             }
-            return retValue; 
+            return retValue;
         }
 
         static void DoFold(int foldX, int foldY, List<Point> points)

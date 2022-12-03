@@ -1,13 +1,5 @@
 ﻿using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
-using static System.Formats.Asn1.AsnWriter;
-using System.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Reflection;
-using System.Text;
-using System.Linq.Expressions;
 
 namespace AdventOfCode.AocTasks2022
 {

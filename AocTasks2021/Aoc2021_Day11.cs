@@ -22,7 +22,7 @@ namespace AdventOfCode.AocTasks2021
     [AocTask(2021, 11)]
     public class Aoc2021_Day11 : IAocTask
     {
-        public List<Octopus> Octopuses{ get; set; }
+        public List<Octopus> Octopuses { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public int Result2 { get; set; }
@@ -30,7 +30,7 @@ namespace AdventOfCode.AocTasks2021
         {
             Octopuses = LoadTaskInput(filePath, out int width, out int height);
             Width = width;
-            Height= height;
+            Height = height;
         }
         static void ResetFlashStatus(List<Octopus> octopuses)
         {

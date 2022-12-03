@@ -14,7 +14,7 @@ namespace AdventOfCode.AocTasks2022
         static List<int> LoadTaskinput(string filePath)
         {
             var numbers = new List<int>();
-            var data = System.IO.File.ReadAllText(filePath).Split("\n\n").Select(l => l.Split("\n").Where(i=>!string.IsNullOrEmpty(i)).Select(int.Parse).Sum(i=>i)).ToList();
+            var data = System.IO.File.ReadAllText(filePath).Split("\n\n").Select(l => l.Split("\n").Where(i => !string.IsNullOrEmpty(i)).Select(int.Parse).Sum(i => i)).ToList();
             return data;
         }
         string IAocTask.Solve1()
@@ -23,7 +23,7 @@ namespace AdventOfCode.AocTasks2022
         }
         string IAocTask.Solve2()
         {
-            
+
             return Numbers.OrderByDescending(i => i).Take(3).Sum().ToString();
         }
     }

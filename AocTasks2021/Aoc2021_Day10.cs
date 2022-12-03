@@ -10,7 +10,7 @@ namespace AdventOfCode.AocTasks2021
         public Dictionary<char, int> CharScoresLookup { get; set; }
         public Dictionary<char, int> AutoCompleteScoresLookup { get; set; }
         public string[] Lines { get; set; }
-        public List<long> AutoCompletes{ get; set; }
+        public List<long> AutoCompletes { get; set; }
         public Aoc2021_Day10(string filePath)
         {
             OpenClosePairLookup = new Dictionary<char, char>()
@@ -40,7 +40,7 @@ namespace AdventOfCode.AocTasks2021
         {
             return File.ReadAllLines(filePath);
         }
-        
+
         string IAocTask.Solve1()
         {
             var errors = new List<char>();
@@ -88,14 +88,14 @@ namespace AdventOfCode.AocTasks2021
             }
             foreach (var error in errors)
             {
-                retValue+= CharScoresLookup[error];
+                retValue += CharScoresLookup[error];
             }
             AutoCompletes = autoCompletes;
             return retValue.ToString();
         }
         string IAocTask.Solve2()
         {
-            var retValue= AutoCompletes.OrderBy(s => s).ElementAt(AutoCompletes.Count / 2);
+            var retValue = AutoCompletes.OrderBy(s => s).ElementAt(AutoCompletes.Count / 2);
             return retValue.ToString();
         }
 
