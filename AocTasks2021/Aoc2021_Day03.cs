@@ -5,16 +5,15 @@ namespace AdventOfCode.AocTasks2021
     [AocTask(2021, 3)]
     public class Aoc2021_Day03 : IAocTask
     {
+        public string FilePath { get; set; }
         public List<string> Data { get; set; }
         public Aoc2021_Day03(string filePath)
         {
-            Data = LoadTaskinput(filePath);
+            FilePath= filePath;
         }
-
-        static List<string> LoadTaskinput(string filePath)
+        public void PrepareData()
         {
-            var lines = System.IO.File.ReadAllLines(filePath).ToList<string>();
-            return lines;
+            Data = System.IO.File.ReadAllLines(FilePath).ToList<string>();
         }
         string IAocTask.Solve1()
         {
@@ -83,8 +82,3 @@ namespace AdventOfCode.AocTasks2021
         }
     }
 }
-
-
-
-
-

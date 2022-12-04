@@ -22,19 +22,20 @@ namespace AdventOfCode.AocTasks2021
                 Value = value;
             }
         }
+        public string FilePath { get; set; }
         public List<Cell> Cells { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public List<Cell> MinPoints { get; set; }
         public Aoc2021_Day09(string filePath)
         {
-            Cells = LoadTaskinput(filePath);
-            MinPoints = new List<Cell>();
+            FilePath= filePath;
         }
-        private List<Cell> LoadTaskinput(string filePath)
+        public void PrepareData()
         {
-            var retValue = new List<Cell>();
-            var data = System.IO.File.ReadAllLines(filePath).ToList();
+            MinPoints = new List<Cell>();
+            Cells = new List<Cell>();
+            var data = System.IO.File.ReadAllLines(FilePath).ToList();
 
             Height = data.Count;
             Width = data[0].Length;
@@ -45,10 +46,9 @@ namespace AdventOfCode.AocTasks2021
                 for (var x = 0; x < Width; x++)
                 {
                     var cell = new Cell(x, y, int.Parse(rowData[x].ToString()));
-                    retValue.Add(cell);
+                    Cells.Add(cell);
                 }
             }
-            return retValue;
         }
         private bool IsValidPos(int x, int y)
         {
@@ -140,8 +140,3 @@ namespace AdventOfCode.AocTasks2021
         }
     }
 }
-
-
-
-
-

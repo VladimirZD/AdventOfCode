@@ -5,6 +5,7 @@ namespace AdventOfCode.AocTasks2021
     [AocTask(2021, 5)]
     public class Aoc2021_Day05 : IAocTask
     {
+        public string FilePath { get; set; }
         public List<List<Point>> Points1 { get; set; }
         public List<List<Point>> Points2 { get; set; }
 
@@ -19,13 +20,15 @@ namespace AdventOfCode.AocTasks2021
                 Y = y;
             }
         }
-
         public Aoc2021_Day05(string filePath)
         {
-            Points1 = LoadTaskinput(filePath, false);
-            Points2 = LoadTaskinput(filePath, true);
+            FilePath= filePath;
         }
-
+        public void PrepareData()
+        {
+            Points1 = LoadTaskinput(FilePath, false);
+            Points2 = LoadTaskinput(FilePath, true);
+        }
         static List<List<Point>> LoadTaskinput(string filePath, bool includeDiagonals)
         {
             List<List<Point>> retValue = new();
@@ -71,8 +74,3 @@ namespace AdventOfCode.AocTasks2021
         }
     }
 }
-
-
-
-
-

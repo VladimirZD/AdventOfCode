@@ -6,17 +6,16 @@ namespace AdventOfCode.AocTasks2015
     [AocTask(2015, 2)]
     public class Aoc2015_Day02 : IAocTask
     {
+        public string FilePath { get; set; }
         public List<List<int>> PackageData { get; set; }
         public Aoc2015_Day02(string filePath)
         {
-            PackageData = LoadTaskinput(filePath);
+            FilePath= filePath;
         }
-        static List<List<int>> LoadTaskinput(string filePath)
+        public void PrepareData()
         {
-            var data = System.IO.File.ReadAllLines(filePath).Select(l => l.Split('x').Select(int.Parse).ToList()).ToList();
-            return data;
+            PackageData = System.IO.File.ReadAllLines(FilePath).Select(l => l.Split('x').Select(int.Parse).ToList()).ToList();
         }
-
         public static int GetArea(int l, int w, int h)
         {
             /*2*l*w + 2*w*h + 2*h*l*/

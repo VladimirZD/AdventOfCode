@@ -1,34 +1,27 @@
 ﻿using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
-using System.IO;
-using System.Runtime.InteropServices;
-using static AdventOfCode.AocTasks2021.Aoc2021_Day09;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AdventOfCode.AocTasks2015
 {
     [AocTask(2015, 3)]
     public class Aoc2015_Day03 : IAocTask
     {
-        public string Directions{ get; set; }
+        public string FilePath { get; set; }
+        public string Directions { get; set; }
         public Aoc2015_Day03(string filePath)
         {
-            Directions= LoadTaskinput(filePath);
+            FilePath= filePath;
         }
-        static string LoadTaskinput(string filePath)
+        public void PrepareData()
         {
-            var input = System.IO.File.ReadAllText(filePath);
-            var data = input;
-            return data;
+            Directions = System.IO.File.ReadAllText(FilePath);
         }
-        
         string IAocTask.Solve1()
         {
             HashSet<(int, int)> houses = VisitHouses(Directions);
             return houses.Count.ToString();
         }
-
-        static private HashSet<(int, int)> VisitHouses(string directions)
+        private static HashSet<(int, int)> VisitHouses(string directions)
         {
             int x = 0;
             int y = 0;
@@ -61,14 +54,9 @@ namespace AdventOfCode.AocTasks2015
 
         string IAocTask.Solve2()
         {
-            HashSet<(int, int)> housesSanta = VisitHouses(new string(Directions.Where((c, i) => i % 2 !=0).ToArray()));
+            HashSet<(int, int)> housesSanta = VisitHouses(new string(Directions.Where((c, i) => i % 2 != 0).ToArray()));
             HashSet<(int, int)> housesRobo = VisitHouses(new string(Directions.Where((c, i) => i % 2 == 0).ToArray()));
             return (housesSanta.Union(housesRobo)).Count().ToString();
         }
     }
 }
-
-
-
-
-

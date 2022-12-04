@@ -6,21 +6,20 @@ namespace AdventOfCode.AocTasks2021
     [AocTask(2021, 1)]
     public class Aoc2021_Day01 : IAocTask
     {
+        public string FilePath { get; set; }
         public List<int> Numbers { get; set; }
         public Aoc2021_Day01(string filePath)
         {
-            Numbers = LoadTaskinput(filePath);
+            FilePath = filePath;
         }
-
-        static List<int> LoadTaskinput(string filePath)
+        public void PrepareData()
         {
-            var numbers = new List<int>();
-            string[] lines = System.IO.File.ReadAllLines(filePath);
+            Numbers = new List<int>();
+            string[] lines = System.IO.File.ReadAllLines(FilePath);
             foreach (var line in lines)
             {
-                numbers.Add(int.Parse(line));
+                Numbers.Add(int.Parse(line));
             }
-            return numbers;
         }
         string IAocTask.Solve1()
         {
@@ -56,8 +55,3 @@ namespace AdventOfCode.AocTasks2021
         }
     }
 }
-
-
-
-
-

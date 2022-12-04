@@ -22,15 +22,32 @@ namespace AdventOfCode.AocTasks2021
     [AocTask(2021, 11)]
     public class Aoc2021_Day11 : IAocTask
     {
+        public string FilePath { get; set; }
         public List<Octopus> Octopuses { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public int Result2 { get; set; }
         public Aoc2021_Day11(string filePath)
         {
-            Octopuses = LoadTaskInput(filePath, out int width, out int height);
-            Width = width;
-            Height = height;
+            FilePath = filePath;
+        }
+        public void PrepareData()
+        {
+            Octopuses = new List<Octopus>();
+            var data = System.IO.File.ReadAllLines(FilePath).ToList();
+
+            Height = data.Count;
+            Width = data[0].Length;
+
+            for (var y = 0; y < Height; y++)
+            {
+                var rowData = data[y].ToCharArray();
+                for (var x = 0; x < Width; x++)
+                {
+                    var item = new Octopus(x, y, int.Parse(rowData[x].ToString()));
+                    Octopuses.Add(item);
+                }
+            }
         }
         static void ResetFlashStatus(List<Octopus> octopuses)
         {
@@ -61,7 +78,7 @@ namespace AdventOfCode.AocTasks2021
                     {
                         octopus.EnergyLevel = 0;
                         octopus.Flashed = true;
-                        var effected = GetCellsInRadius(Octopuses, octopus, 2, Width, Height);
+                        var effected = GetCellsInRadius(Octopuses, octopus, Width, Height);
                         foreach (var item in effected)
                         {
                             if (!item.Flashed)
@@ -86,10 +103,7 @@ namespace AdventOfCode.AocTasks2021
             }
             return retValue.ToString();
         }
-        string IAocTask.Solve2()
-        {
-            return Result2.ToString();
-        }
+        string IAocTask.Solve2() => Result2.ToString();
 
         static void IncreaseEnergyLevels(List<Octopus> octopuses)
         {
@@ -104,26 +118,7 @@ namespace AdventOfCode.AocTasks2021
             var retValue = x >= 0 && x < width && y >= 0 && y < height;
             return retValue;
         }
-        static List<Octopus> LoadTaskInput(string filePath, out int Width, out int Height)
-        {
-            var retValue = new List<Octopus>();
-            var data = System.IO.File.ReadAllLines(filePath).ToList();
-
-            Height = data.Count;
-            Width = data[0].Length;
-
-            for (var y = 0; y < Height; y++)
-            {
-                var rowData = data[y].ToCharArray();
-                for (var x = 0; x < Width; x++)
-                {
-                    var item = new Octopus(x, y, int.Parse(rowData[x].ToString()));
-                    retValue.Add(item);
-                }
-            }
-            return retValue;
-        }
-        static List<Octopus> GetCellsInRadius(List<Octopus> octopuses, Octopus start, int radius, int width, int height)
+        static List<Octopus> GetCellsInRadius(List<Octopus> octopuses, Octopus start,int width, int height)
         {
             var retValue = new List<Octopus>();
             int[] dx = { 0, 0, -1, 1, -1, -1, 1, 1 };
@@ -145,11 +140,5 @@ namespace AdventOfCode.AocTasks2021
         {
             return (Width * y) + x;
         }
-
     }
 }
-
-
-
-
-
