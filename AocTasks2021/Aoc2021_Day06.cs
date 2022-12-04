@@ -7,14 +7,15 @@ namespace AdventOfCode.AocTasks2021
     [AocTask(2021, 6)]
     public class Aoc2021_Day06 : IAocTask
     {
+        public string FilePath { get; set; }
         public List<int> Lanterns { get; set; }
         public Aoc2021_Day06(string filePath)
         {
-            Lanterns = LoadTaskinput(filePath);
+            FilePath= filePath;
         }
-        static List<int> LoadTaskinput(string filePath)
+        public void PrepareData()
         {
-            return File.ReadAllText(filePath).ToString().Split(",").Select(n => int.Parse(n)).ToList();
+            Lanterns = File.ReadAllText(FilePath).ToString().Split(",").Select(n => int.Parse(n)).ToList();
         }
         string IAocTask.Solve1()
         {
@@ -26,7 +27,6 @@ namespace AdventOfCode.AocTasks2021
             while (currentDay < days)
             {
                 var newFishCnt = 0;
-                List<int> newFish = new();
                 for (var i = 0; i < lanterns.Count; i++)
                 {
                     lanterns[i] = lanterns[i] - 1;
@@ -79,8 +79,3 @@ namespace AdventOfCode.AocTasks2021
         }
     }
 }
-
-
-
-
-

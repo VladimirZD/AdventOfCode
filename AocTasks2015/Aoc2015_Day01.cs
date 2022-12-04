@@ -6,15 +6,15 @@ namespace AdventOfCode.AocTasks2015
     [AocTask(2015, 1)]
     public class Aoc2015_Day01 : IAocTask
     {
+        public string FilePath { get; set; }
         public string FloorData { get; set; }
         public Aoc2015_Day01(string filePath)
         {
-            FloorData = LoadTaskinput(filePath);
+            FilePath= filePath;
         }
-        static string LoadTaskinput(string filePath)
+        public void PrepareData()
         {
-
-            return System.IO.File.ReadAllText(filePath);
+            FloorData = System.IO.File.ReadAllText(FilePath);
         }
         string IAocTask.Solve1()
         {

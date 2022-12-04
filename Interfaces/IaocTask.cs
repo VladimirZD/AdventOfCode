@@ -4,5 +4,6 @@
     {
         public string Solve1();
         public string Solve2();
+        public void PrepareData();
     }
 }

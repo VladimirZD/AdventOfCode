@@ -6,12 +6,21 @@ namespace AdventOfCode.AocTasks2021
     [AocTask(2021, 14)]
     public class Aoc2021_Day14 : IAocTask
     {
+        public string FilePath { get; set; }
         private Dictionary<string, string> Transformations { get; set; }
         private Dictionary<string, long> ElementPairs { get; set; }
         private string StartTemplate { get; set; }
         public Aoc2021_Day14(string filePath)
         {
-            LoadTaskInput(filePath);
+            FilePath = filePath;
+        }
+        public void PrepareData()
+        {
+            var data = File.ReadLines(FilePath).ToList();
+            var retValue = new Dictionary<string, string>();
+            var splitLineIndex = data.IndexOf(data.Where(l => l == "").Single());
+            StartTemplate = data[0].ToString();
+            Transformations = data.Skip(splitLineIndex + 1).Take(data.Count - splitLineIndex).Select(i => i.Split(" -> ")).ToDictionary(i => i[0], i => i[1]);
         }
         string IAocTask.Solve1()
         {
@@ -31,7 +40,7 @@ namespace AdventOfCode.AocTasks2021
                 var newElementPairs = new Dictionary<string, long>();
                 foreach (var pair in ElementPairs)
                 {
-                    if (Transformations.TryGetValue(pair.Key, out string value))
+                    if (Transformations.TryGetValue(pair.Key, out string? value))
                     {
                         var newElement = value;
                         var newPair1 = pair.Key[0] + newElement;
@@ -73,18 +82,5 @@ namespace AdventOfCode.AocTasks2021
             var sortedLetters = lettersCnt.Select(l => l.Value / 2).OrderByDescending(l => l).ToList();
             return sortedLetters.First() - sortedLetters.Last();
         }
-        private void LoadTaskInput(string filePath)
-        {
-            var data = File.ReadLines(filePath).ToList();
-            var retValue = new Dictionary<string, string>();
-            var splitLineIndex = data.IndexOf(data.Where(l => l == "").Single());
-            StartTemplate = data[0].ToString();
-            Transformations = data.Skip(splitLineIndex + 1).Take(data.Count - splitLineIndex).Select(i => i.Split(" -> ")).ToDictionary(i => i[0], i => i[1]);
-        }
     }
 }
-
-
-
-
-

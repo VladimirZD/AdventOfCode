@@ -6,12 +6,17 @@ namespace AdventOfCode.AocTasks2021
     [AocTask(2021, 10)]
     public class Aoc2021_Day10 : IAocTask
     {
+        public string FilePath { get; set; }
         public Dictionary<char, char> OpenClosePairLookup { get; set; }
         public Dictionary<char, int> CharScoresLookup { get; set; }
         public Dictionary<char, int> AutoCompleteScoresLookup { get; set; }
         public string[] Lines { get; set; }
         public List<long> AutoCompletes { get; set; }
         public Aoc2021_Day10(string filePath)
+        {
+            FilePath = filePath;
+        }
+        public void PrepareData()
         {
             OpenClosePairLookup = new Dictionary<char, char>()
             {
@@ -34,13 +39,8 @@ namespace AdventOfCode.AocTasks2021
                 {'{',3 },
                 {'<',4 }
             };
-            Lines = LoadTaskInput(filePath);
+            Lines = File.ReadAllLines(FilePath);
         }
-        static string[] LoadTaskInput(string filePath)
-        {
-            return File.ReadAllLines(filePath);
-        }
-
         string IAocTask.Solve1()
         {
             var errors = new List<char>();
@@ -98,7 +98,6 @@ namespace AdventOfCode.AocTasks2021
             var retValue = AutoCompletes.OrderBy(s => s).ElementAt(AutoCompletes.Count / 2);
             return retValue.ToString();
         }
-
     }
 }
 

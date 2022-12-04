@@ -6,16 +6,15 @@ namespace AdventOfCode.AocTasks2022
     [AocTask(2022, 1)]
     public class Calorie_Counting : IAocTask
     {
+        public string FilePath { get; set; }
         public List<int> Numbers { get; set; }
         public Calorie_Counting(string filePath)
         {
-            Numbers = LoadTaskinput(filePath);
+            FilePath= filePath;
         }
-        static List<int> LoadTaskinput(string filePath)
+        public void PrepareData()
         {
-            var numbers = new List<int>();
-            var data = System.IO.File.ReadAllText(filePath).Split("\n\n").Select(l => l.Split("\n").Where(i => !string.IsNullOrEmpty(i)).Select(int.Parse).Sum(i => i)).ToList();
-            return data;
+            Numbers = System.IO.File.ReadAllText(FilePath).Split("\n\n").Select(l => l.Split("\n").Where(i => !string.IsNullOrEmpty(i)).Select(int.Parse).Sum(i => i)).ToList();
         }
         string IAocTask.Solve1()
         {
@@ -23,7 +22,6 @@ namespace AdventOfCode.AocTasks2022
         }
         string IAocTask.Solve2()
         {
-
             return Numbers.OrderByDescending(i => i).Take(3).Sum().ToString();
         }
     }

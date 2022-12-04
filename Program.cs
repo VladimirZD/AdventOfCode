@@ -11,8 +11,6 @@ namespace AdventOfCode
     {
         static void Main(string[] args)
         {
-            //TODO run all run one run year
-            //provide session cookie 
             var tasks = GetAocTasks();
             Console.WriteLine($"Found {tasks.Count} Aoc Tasks");
             CookieData cookieData = new();
@@ -39,24 +37,31 @@ namespace AdventOfCode
                 {
                     Console.WriteLine($"Executing {task.Name}({aocTaskAttribute.Year}/{aocTaskAttribute.Day})");
                     string filePath = $@"{AppContext.BaseDirectory}TaskData\{aocTaskAttribute.Year}_{aocTaskAttribute.Day}.txt";
-                    stopWatch.Start();
                     var instance = (Activator.CreateInstance(task, filePath) as IAocTask);
-                    stopWatch.Stop();
-                    Console.WriteLine($"\tInstance creation and data preparation done in {stopWatch.Elapsed}ms");
                     if (instance != null)
                     {
-                        stopWatch.Restart();
-                        var result1 = instance.Solve1();
-                        stopWatch.Stop();
-                        Console.WriteLine($"\tSolve1 result is {result1} done in {stopWatch.Elapsed}ms");
-                        stopWatch.Restart();
-                        var result2 = instance.Solve2();
-                        stopWatch.Stop();
-                        Console.WriteLine($"\tSolve2 result is {result2} done in {stopWatch.Elapsed}ms");
+                        stopWatch.Start();
+                        instance.PrepareData();
+                        Console.WriteLine($"\tData preparation done in {GetFormatedElapsed(stopWatch.Elapsed)} ");
+                        //Thread.Sleep(3000);
+                        TimeSpan prevTimeSpan = stopWatch.Elapsed; ;
+                        if (instance != null)
+                        {
+                            var result1 = instance.Solve1();
+                            Console.WriteLine($"\tSolve1 result is {result1} done in {GetFormatedElapsed(stopWatch.Elapsed - prevTimeSpan)}");
+                            prevTimeSpan = stopWatch.Elapsed;
+                            var result2 = instance.Solve2();
+                            Console.WriteLine($"\tSolve2 result is {result2} done in {GetFormatedElapsed(stopWatch.Elapsed - prevTimeSpan)}");
+                            stopWatch.Stop();
+                            Console.WriteLine($"\tTotal time {stopWatch.Elapsed} ({GetFormatedElapsed(stopWatch.Elapsed)})");
+                        }
                     }
-                    stopWatch.Stop();
                 }
             }
+        }
+        private static string GetFormatedElapsed(TimeSpan time)
+        {
+            return $"{time.TotalMicroseconds} µs";
         }
         private static void CreateTaskDataFolder()
         {

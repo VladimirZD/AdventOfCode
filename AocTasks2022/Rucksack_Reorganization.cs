@@ -7,21 +7,19 @@ namespace AdventOfCode.AocTasks2022
     public class Rucksack_Reorganization : IAocTask
     {
         private string[] Gifts { get; set; }
+        public string FilePath { get; set; }
         public Rucksack_Reorganization(string filePath)
         {
-
-            Gifts = LoadTaskinput(filePath);
+            FilePath = filePath;
         }
         static string[] LoadTaskinput(string filePath)
         {
-
             var input = System.IO.File.ReadAllText(filePath);
             var data = input.Split("\n").Where(l => !string.IsNullOrEmpty(l)).ToArray();
             return data;
         }
         string IAocTask.Solve1()
         {
-
             var totalScore = 0;
             var gifts = Gifts.AsSpan();
             foreach (var giftData in gifts)
@@ -69,6 +67,16 @@ namespace AdventOfCode.AocTasks2022
                 }
             }
             return totalScore.ToString();
+        }
+
+        public void LoadData()
+        {
+            Gifts = LoadTaskinput(FilePath);
+        }
+
+        public void PrepareData()
+        {
+            Gifts = LoadTaskinput(FilePath);
         }
     }
 }

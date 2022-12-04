@@ -6,14 +6,16 @@ namespace AdventOfCode.AocTasks2021
     [AocTask(2021, 7)]
     public class Aoc2021_Day07 : IAocTask
     {
+        public string FilePath { get; set; }
         public List<int> Crabs { get; set; }
+
         public Aoc2021_Day07(string filePath)
         {
-            Crabs = LoadTaskinput(filePath);
+            FilePath= filePath;
         }
-        static List<int> LoadTaskinput(string filePath)
+        public void PrepareData()
         {
-            return File.ReadAllText(filePath).ToString().Split(",").Select(n => int.Parse(n)).ToList();
+            Crabs = File.ReadAllText(FilePath).ToString().Split(",").Select(n => int.Parse(n)).ToList();
         }
         string IAocTask.Solve1()
         {
@@ -37,7 +39,6 @@ namespace AdventOfCode.AocTasks2021
             }
             return minFuelUsed.ToString();
         }
-
         string IAocTask.Solve2()
         {
             var minFuelUsed = int.MaxValue;
@@ -61,8 +62,3 @@ namespace AdventOfCode.AocTasks2021
         }
     }
 }
-
-
-
-
-

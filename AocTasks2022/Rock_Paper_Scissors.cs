@@ -11,36 +11,10 @@ namespace AdventOfCode.AocTasks2022
         public Dictionary<char, char> WinningMoves { get; set; }
         public Dictionary<char, char> SameMoves { get; set; }
         public Dictionary<char, int> MoveScores { get; set; }
-
+        public string FilePath { get; set; }
         public Rock_Paper_Scissors(string filePath)
         {
-
-            WinningMoves = new Dictionary<char, char>()
-            {
-                { 'A','Y' }, //Rock ,Paper
-                { 'B','Z' }, //Paper ,Scissors
-                { 'C','X' } //Scissors, Rock
-            };
-            LooseMoves = new Dictionary<char, char>()
-            {
-                { 'A','Z' }, //Rock ,Scissors
-                { 'B','X' }, //Paper ,Rock
-                { 'C','Y' } //Scissors, Paper
-            };
-            SameMoves = new Dictionary<char, char>()
-            {
-                { 'A','X' }, //Rock
-                { 'B','Y' }, //Paper
-                { 'C','Z' } //Scissors
-            };
-
-            MoveScores = new Dictionary<char, int>()
-            {
-                {'X',1}, //Rock
-                {'Y',2 }, //Paper
-                {'Z',3 } //Scissors
-            };
-            Rounds = LoadTaskinput(filePath);
+            FilePath = filePath;
         }
         static string[] LoadTaskinput(string filePath)
         {
@@ -90,10 +64,34 @@ namespace AdventOfCode.AocTasks2022
             return totalScore.ToString();
 
         }
+        public void PrepareData()
+        {
+            WinningMoves = new Dictionary<char, char>()
+            {
+                { 'A','Y' }, //Rock ,Paper
+                { 'B','Z' }, //Paper ,Scissors
+                { 'C','X' } //Scissors, Rock
+            };
+            LooseMoves = new Dictionary<char, char>()
+            {
+                { 'A','Z' }, //Rock ,Scissors
+                { 'B','X' }, //Paper ,Rock
+                { 'C','Y' } //Scissors, Paper
+            };
+            SameMoves = new Dictionary<char, char>()
+            {
+                { 'A','X' }, //Rock
+                { 'B','Y' }, //Paper
+                { 'C','Z' } //Scissors
+            };
+
+            MoveScores = new Dictionary<char, int>()
+            {
+                {'X',1}, //Rock
+                {'Y',2 }, //Paper
+                {'Z',3 } //Scissors
+            };
+            Rounds = LoadTaskinput(FilePath);
+        }
     }
 }
-
-
-
-
-
