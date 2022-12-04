@@ -69,7 +69,7 @@ namespace AdventOfCode
         static List<System.Type> GetAocTasks()
         {
             var types = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsDefined(typeof(AocTask)));
-            return types.OrderBy(t => t.GetCustomAttribute<AocTask>().Year).ThenByDescending(t => t.GetCustomAttribute<AocTask>().Year).ToList();
+            return types.OrderBy(t => t.GetCustomAttribute<AocTask>().Year).ThenBy(t => t.GetCustomAttribute<AocTask>().Day).ToList();
         }
         public static async Task<string> GenerateTaskDataFile(string url, CookieData cookieData)
         {
@@ -91,22 +91,24 @@ namespace AdventOfCode
             Console.WriteLine($@"Downloading task data to folder {AppContext.BaseDirectory}TaskData");
             foreach (var task in tasks)
             {
-                Console.Write($"\tDownloading task data for class:{task.Name}...");
                 var aocTaskAttribute = task.GetCustomAttribute<AocTask>();
-                var fileName = $"{aocTaskAttribute.Year}_{aocTaskAttribute.Day}.txt";
-                string filePath = $@"{AppContext.BaseDirectory}TaskData\{fileName}";
-                string msg = $"File {fileName} exist, skipping download";
-                if (!File.Exists(filePath))
+                Console.Write($"\tDownloading task data :{aocTaskAttribute.Description}...");
+                if (aocTaskAttribute != null)
                 {
-                    var url = $"https://adventofcode.com/{aocTaskAttribute.Year}/day/{aocTaskAttribute.Day}/input";
-                    var downloadTask = GenerateTaskDataFile(url, cookieData);
-                    downloadTask.Wait();
-                    var textData = downloadTask.Result;
-                    File.WriteAllText(filePath, textData);
-                    msg = $"File {fileName} created";
-
+                    var fileName = $"{aocTaskAttribute.Year}_{aocTaskAttribute.Day}.txt";
+                    string filePath = $@"{AppContext.BaseDirectory}TaskData\{fileName}";
+                    string msg = $"File {fileName} exist, skipping download";
+                    if (!File.Exists(filePath))
+                    {
+                        var url = $"https://adventofcode.com/{aocTaskAttribute.Year}/day/{aocTaskAttribute.Day}/input";
+                        var downloadTask = GenerateTaskDataFile(url, cookieData);
+                        downloadTask.Wait();
+                        var textData = downloadTask.Result;
+                        File.WriteAllText(filePath, textData);
+                        msg = $"File {fileName} created";
+                    }
+                    Console.WriteLine(msg);
                 }
-                Console.WriteLine(msg);
             }
         }
     }

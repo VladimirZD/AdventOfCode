@@ -6,69 +6,40 @@ namespace AdventOfCode.AocTasks2022
     [AocTask(2022, 4, "Camp Cleanup")]
     public class Camp_Cleanup : IAocTask
     {
-        private string[] Gifts { get; set; }
+        private string[][] ZonesRanges{ get; set; }
+        private int PartialOverLap{ get; set; }
         public Camp_Cleanup(string filePath)
         {
-
-            Gifts = LoadTaskinput(filePath);
+            ZonesRanges = LoadTaskinput(filePath);
         }
-        static string[] LoadTaskinput(string filePath)
+        static string[][] LoadTaskinput(string filePath)
         {
-
-            var input = System.IO.File.ReadAllText(filePath);
-            var data = input.Split("\n").Where(l => !string.IsNullOrEmpty(l)).ToArray();
+            //var input= "2-4,6-8\r\n2-3,4-5\r\n5-7,7-9\r\n2-8,3-7\r\n6-6,4-6\r\n2-6,4-8".Split("\r\n");
+            var input = System.IO.File.ReadAllText(filePath).Split("\n");
+            var data = input.Where(l => !string.IsNullOrEmpty(l)).Select(l => l.Split(",")).ToArray();
             return data;
         }
         string IAocTask.Solve1()
         {
-
-            var totalScore = 0;
-            var gifts = Gifts.AsSpan();
-            foreach (var giftData in gifts)
+            var fullOverLap= 0;
+            foreach (var zoneRange in ZonesRanges)
             {
-                var halfLen = giftData.Length / 2;
-                var usedLetters = new HashSet<char>();
-                for (var i = 0; i < halfLen; i++)
+                var zone1Data = zoneRange[0].Split("-").Select(i => int.Parse(i)).ToArray();
+                var zone2Data = zoneRange[1].Split("-").Select(i => int.Parse(i)).ToArray();
+                if ((zone1Data[0] <= zone2Data[0] && zone1Data[1] >= zone2Data[1]) || (zone2Data[0] <= zone1Data[0] && zone2Data[1] >= zone1Data[1]))
                 {
-                    var gift = giftData[i];
-                    if (giftData.IndexOf(giftData[i], halfLen) != -1)
-                    {
-                        if (!usedLetters.Contains(gift))
-                        {
-                            int score = GetCharScore(gift);
-                            totalScore += score;
-                            usedLetters.Add(gift);
-                        }
-                    }
+                    fullOverLap++;
+                }
+                if ((zone1Data[0] <= zone2Data[0] && zone1Data[1] >= zone2Data[0]) || (zone2Data[0] <= zone1Data[0] && zone2Data[1] >= zone1Data[0]))
+                {
+                    PartialOverLap++;
                 }
             }
-            return totalScore.ToString();
-        }
-        private static int GetCharScore(char gift)
-        {
-            return (int)gift - (char.IsLower(gift) ? 96 : 38);
+            return fullOverLap.ToString();
         }
         string IAocTask.Solve2()
         {
-            var totalScore = 0;
-            var gifts = Gifts.AsSpan();
-            for (var i = 0; i < gifts.Length; i += 3)
-            {
-                var gift1 = gifts[i];
-                var gift2 = gifts[i + 1];
-                var gift3 = gifts[i + 2];
-                for (var j = 0; j < gift1.Length; j++)
-                {
-                    var gift = gift1[j];
-                    if (gift2.IndexOf(gift) != -1 && gift3.IndexOf(gift) != -1)
-                    {
-                        var score = GetCharScore(gift);
-                        totalScore += score;
-                        break;
-                    }
-                }
-            }
-            return totalScore.ToString();
+            return PartialOverLap.ToString();
         }
     }
 }
