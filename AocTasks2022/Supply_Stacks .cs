@@ -3,6 +3,7 @@ using AdventOfCode.Interfaces;
 using Org.BouncyCastle.Asn1.Cms;
 using Org.BouncyCastle.Utilities;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace AdventOfCode.AocTasks2022
 {
@@ -20,17 +21,21 @@ namespace AdventOfCode.AocTasks2022
         public void PrepareData()
         {
             const int colWidth = 4;
-            //var input = "    [D]    \n[N] [C]    \n[Z] [M] [P]\n 1   2   3 \n\nmove 1 from 2 to 1\nmove 3 from 1 to 3\nmove 2 from 2 to 1\nmove 1 from 1 to 2";
             var input = System.IO.File.ReadAllText(FilePath);
-            var stateData = input.Split("\n\n");
-            var boxData = stateData[0].Split("\n").ToArray();
-            var instructionData = stateData[1].Replace("move ", "").Replace("from ", "").Replace("to ", "").Split("\n").Where(i=>!string.IsNullOrEmpty(i)).Select(i => i.Split(" ")).ToArray();
 
-            void CreateBoxes(int colWidth, string[] boxData)
+            var index = input.IndexOf("\n\n");
+            var stateData1= input[..index];  
+            var stateData2 = input[(index + 2)..];
+            
+            
+            var boxData = stateData1.Split("\n").ToArray();
+            var instructionData = stateData2.Replace("move ", "").Replace("from ", "").Replace("to ", "").Split("\n").Where(i => !string.IsNullOrEmpty(i)).Select(i => i.Split(" ")).ToArray();
+
+            void CreateBoxes(int colWidth, string[] boxData,string stateData1)
             {
                 Boxes1= new List<Stack<char>>();
                 Boxes2 = new List<Stack<char>>();
-                var colCount = int.Parse(boxData[boxData.Length - 1].Max().ToString());
+                var colCount=9; //int.Parse(boxData[boxData.Length - 1].Max().ToString());
                 for (var i = 0; i < colCount; i++)
                 {
                     Boxes1.Add(new Stack<char>());
@@ -52,40 +57,33 @@ namespace AdventOfCode.AocTasks2022
             }
             static void MoveBoxes(string[][] instructionData, List<Stack<char>> boxes1, List<Stack<char>> boxes2)
             {
-                foreach (var move in instructionData)
+                var spanInstructions=instructionData.AsSpan();
+                for (var x=0;x<spanInstructions.Length;x++)
                 {
+                    var move = spanInstructions[x];
                     var moveAmount = int.Parse(move[0]);
-                    var moveFromIndex = int.Parse(move[1])-1;
-                    var moveToIndex = int.Parse(move[2])-1;
-
-                    var source1 = boxes1[moveFromIndex];
-                    var source2 = boxes2[moveFromIndex];
-                    var destination1 = boxes1[moveToIndex];
-                    var destination2 = boxes2[moveToIndex];
-
+                    var moveFromIndex = int.Parse(move[1]) - 1;
+                    var moveToIndex = int.Parse(move[2]) - 1;
                     var removedBoxes = new char[moveAmount];
                     for (var i = 0; i < moveAmount; i++)
                     {
-                        var item = source1.Pop();
-                        destination1.Push(item);
-                        removedBoxes[i] = source2.Pop();
+                        var item = boxes1[(moveFromIndex)].Pop();
+                        boxes1[moveToIndex].Push(item);
+                        removedBoxes[i] = boxes2[(moveFromIndex)].Pop();
                     }
                     for (var i = moveAmount-1; i >=0; i--)
                     {
-                        destination2.Push(removedBoxes[i]);
+                        boxes2[(moveToIndex)].Push(removedBoxes[i]);
                     }
-
-                    
                 }
             }
-            CreateBoxes(colWidth, boxData);
+            CreateBoxes(colWidth, boxData, stateData1);
             MoveBoxes(instructionData, Boxes1,Boxes2);
         }
-
         string IAocTask.Solve1()
         {
             var retValue = "";
-            foreach (var box in Boxes1) 
+            foreach (var box in Boxes1)
             {
                 retValue += box.Pop().ToString();
             }
