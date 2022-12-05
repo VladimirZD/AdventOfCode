@@ -4,6 +4,7 @@ using Org.BouncyCastle.Asn1.Cms;
 using Org.BouncyCastle.Utilities;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace AdventOfCode.AocTasks2022
 {
@@ -24,29 +25,33 @@ namespace AdventOfCode.AocTasks2022
             var input = System.IO.File.ReadAllText(FilePath);
 
             var index = input.IndexOf("\n\n");
-            var stateData1= input[..index];  
-            var stateData2 = input[(index + 2)..];
-            
-            
-            var boxData = stateData1.Split("\n").ToArray();
-            var instructionData = stateData2.Replace("move ", "").Replace("from ", "").Replace("to ", "").Split("\n").Where(i => !string.IsNullOrEmpty(i)).Select(i => i.Split(" ")).ToArray();
+            var boxData = input[..index].Split("\n").ToArray();
+            var boxData2 = input[..index];
 
-            void CreateBoxes(int colWidth, string[] boxData,string stateData1)
+            var instructions = GetInstructions(input[(index + 2)..].AsSpan());
+            CreateBoxes(colWidth, boxData,boxData2);
+            MoveBoxes(Boxes1, Boxes2, instructions);
+
+            void CreateBoxes(int colWidth, string[] boxData,string boxData2)
             {
-                Boxes1= new List<Stack<char>>();
+
+                var colCount = boxData2[boxData2.Length - 2]-48; 
+
+                Boxes1 = new List<Stack<char>>();
                 Boxes2 = new List<Stack<char>>();
-                var colCount=9; //int.Parse(boxData[boxData.Length - 1].Max().ToString());
+                
                 for (var i = 0; i < colCount; i++)
                 {
                     Boxes1.Add(new Stack<char>());
                     Boxes2.Add(new Stack<char>());
                 }
-                for (var row = boxData.Length - 2; row >= 0; row--)
+                var boxSpan = boxData.AsSpan();
+                for (var row = boxSpan.Length - 2; row >= 0; row--)
                 {
                     for (var col = 0; col < colCount; col++)
                     {
                         var elementPos = col * colWidth + 1;
-                        var element = (char)boxData[row][elementPos];
+                        var element = (char)boxSpan[row][elementPos];
                         if (element != 32)
                         {
                             Boxes1[col].Push(element);
@@ -55,15 +60,35 @@ namespace AdventOfCode.AocTasks2022
                     }
                 }
             }
-            static void MoveBoxes(string[][] instructionData, List<Stack<char>> boxes1, List<Stack<char>> boxes2)
+            static List<int> GetInstructions(ReadOnlySpan<char> input)
             {
-                var spanInstructions=instructionData.AsSpan();
-                for (var x=0;x<spanInstructions.Length;x++)
+                List<int> instructions = new();
+                var isNumericMode = false;
+                string numVal = "";
+                foreach (var item in input)
                 {
-                    var move = spanInstructions[x];
-                    var moveAmount = int.Parse(move[0]);
-                    var moveFromIndex = int.Parse(move[1]) - 1;
-                    var moveToIndex = int.Parse(move[2]) - 1;
+                    if (char.IsNumber(item))
+                    {
+                        isNumericMode = true;
+                        numVal += item.ToString();
+                    }
+                    else if (isNumericMode)
+                    {
+                        isNumericMode = false;
+                        int element = int.Parse(numVal);
+                        instructions.Add(element);
+                        numVal = "";
+                    }
+                }
+                return instructions;
+            }
+            static void MoveBoxes(List<Stack<char>> boxes1, List<Stack<char>> boxes2, List<int> instructions)
+            {
+                for (var z = 0; z < instructions.Count; z += 3)
+                {
+                    var moveAmount = instructions[z];
+                    var moveFromIndex = instructions[z + 1] - 1;
+                    var moveToIndex = instructions[z + 2] - 1;
                     var removedBoxes = new char[moveAmount];
                     for (var i = 0; i < moveAmount; i++)
                     {
@@ -71,14 +96,12 @@ namespace AdventOfCode.AocTasks2022
                         boxes1[moveToIndex].Push(item);
                         removedBoxes[i] = boxes2[(moveFromIndex)].Pop();
                     }
-                    for (var i = moveAmount-1; i >=0; i--)
+                    for (var i = moveAmount - 1; i >= 0; i--)
                     {
                         boxes2[(moveToIndex)].Push(removedBoxes[i]);
                     }
                 }
             }
-            CreateBoxes(colWidth, boxData, stateData1);
-            MoveBoxes(instructionData, Boxes1,Boxes2);
         }
         string IAocTask.Solve1()
         {
@@ -100,8 +123,3 @@ namespace AdventOfCode.AocTasks2022
         }
     }
 }
-
-
-
-
-
