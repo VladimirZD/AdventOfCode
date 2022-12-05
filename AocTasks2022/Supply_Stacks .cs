@@ -26,16 +26,18 @@ namespace AdventOfCode.AocTasks2022
 
             var index = input.IndexOf("\n\n");
             var boxData = input[..index].Split("\n").ToArray();
-            var boxData2 = input[..index];
+            //var boxData2 = input[..index];
 
             var instructions = GetInstructions(input[(index + 2)..].AsSpan());
-            CreateBoxes(colWidth, boxData,boxData2);
+            //CreateBoxes(colWidth, boxData,boxData2);
+            CreateBoxes(colWidth, boxData);
             MoveBoxes(Boxes1, Boxes2, instructions);
 
-            void CreateBoxes(int colWidth, string[] boxData,string boxData2)
+            //void CreateBoxes(int colWidth, string[] boxData,string boxData2)
+            void CreateBoxes(int colWidth, string[] boxData)
             {
 
-                var colCount = boxData2[boxData2.Length - 2]-48; 
+                var colCount = boxData[boxData.Length - 1][boxData[boxData.Length - 1].Length - 2]-48 ; // boxData2[boxData2.Length - 2]-48; 
 
                 Boxes1 = new List<Stack<char>>();
                 Boxes2 = new List<Stack<char>>();
