@@ -1,9 +1,11 @@
 ﻿using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
+using System.Diagnostics;
+using System.IO;
 
 namespace AdventOfCode.AocTasks2022
 {
-    [AocTask(2022, 4, "Camp Cleanup")]
+    [AocTask(2022, 4)]
     public class Camp_Cleanup : IAocTask
     {
         private string[][] ZonesRanges { get; set; }
@@ -15,9 +17,44 @@ namespace AdventOfCode.AocTasks2022
         }
         public void PrepareData()
         {
-            //var input= "2-4,6-8\r\n2-3,4-5\r\n5-7,7-9\r\n2-8,3-7\r\n6-6,4-6\r\n2-6,4-8".Split("\r\n");
             var input = System.IO.File.ReadAllText(FilePath).Split("\n");
-            ZonesRanges = input.Where(l => !string.IsNullOrEmpty(l)).Select(l => l.Split(",")).ToArray();
+            //var input2 = System.IO.File.ReadAllText(FilePath);
+            //var inputAsSpan2 = input2.AsSpan();
+
+            //var retValue3 = new List<string[]>();
+            //var cnt= 0;
+            //var itemstring = "";
+            //var data = new string[2];
+            //foreach (var item in inputAsSpan2)
+            //{
+            //    if (char.IsNumber(item) || item == '-')
+            //    {
+            //        itemstring += item;
+            //        cnt++;
+            //        if (cnt % 6==0)
+            //        {
+            //            data[1] = itemstring;
+            //            retValue3.Add(data);
+            //            cnt = 0;
+            //        }
+            //        else if (cnt % 3 == 0)
+            //        {
+            //            data[0]= itemstring;
+            //        }
+            //    }
+                
+            //}
+            var inputAsSpan = input.AsSpan();
+            var retValue = new List<string[]>();
+            foreach (var inputLine in inputAsSpan)
+            {
+                if (!string.IsNullOrEmpty(inputLine))
+                {
+                    var lineData = inputLine.Split(',');
+                    retValue.Add(lineData);
+                }
+            }
+            ZonesRanges=retValue.ToArray();
         }
         string IAocTask.Solve1()
         {
