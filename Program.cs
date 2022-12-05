@@ -29,7 +29,7 @@ namespace AdventOfCode
         }
         private static void RunTasks(List<Type> tasks)
         {
-            Stopwatch stopWatch = new();
+            
             foreach (var task in tasks)
             {
                 var aocTaskAttribute = task.GetCustomAttribute<AocTask>();
@@ -40,10 +40,9 @@ namespace AdventOfCode
                     var instance = (Activator.CreateInstance(task, filePath) as IAocTask);
                     if (instance != null)
                     {
-                        stopWatch.Start();
+                        Stopwatch stopWatch = Stopwatch.StartNew();
                         instance.PrepareData();
                         Console.WriteLine($"\tData preparation done in {GetFormatedElapsed(stopWatch.Elapsed)} ");
-                        //Thread.Sleep(3000);
                         TimeSpan prevTimeSpan = stopWatch.Elapsed; ;
                         if (instance != null)
                         {
@@ -97,7 +96,7 @@ namespace AdventOfCode
             foreach (var task in tasks)
             {
                 var aocTaskAttribute = task.GetCustomAttribute<AocTask>();
-                Console.Write($"\tDownloading task data :{aocTaskAttribute.Description}...");
+                Console.Write($"\tDownloading task data :{task.Name}...");
                 if (aocTaskAttribute != null)
                 {
                     var fileName = $"{aocTaskAttribute.Year}_{aocTaskAttribute.Day}.txt";
