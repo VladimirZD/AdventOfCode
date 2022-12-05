@@ -18,32 +18,6 @@ namespace AdventOfCode.AocTasks2022
         public void PrepareData()
         {
             var input = System.IO.File.ReadAllText(FilePath).Split("\n");
-            //var input2 = System.IO.File.ReadAllText(FilePath);
-            //var inputAsSpan2 = input2.AsSpan();
-
-            //var retValue3 = new List<string[]>();
-            //var cnt= 0;
-            //var itemstring = "";
-            //var data = new string[2];
-            //foreach (var item in inputAsSpan2)
-            //{
-            //    if (char.IsNumber(item) || item == '-')
-            //    {
-            //        itemstring += item;
-            //        cnt++;
-            //        if (cnt % 6==0)
-            //        {
-            //            data[1] = itemstring;
-            //            retValue3.Add(data);
-            //            cnt = 0;
-            //        }
-            //        else if (cnt % 3 == 0)
-            //        {
-            //            data[0]= itemstring;
-            //        }
-            //    }
-                
-            //}
             var inputAsSpan = input.AsSpan();
             var retValue = new List<string[]>();
             foreach (var inputLine in inputAsSpan)
