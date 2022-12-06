@@ -4,11 +4,11 @@ using AdventOfCode.Interfaces;
 namespace AdventOfCode.AocTasks2022
 {
     [AocTask(2022, 3)]
-    public class Day_3_Rucksack_Reorganization : IAocTask
+    public class Rucksack_Reorganization : IAocTask
     {
         private string[] Gifts { get; set; }
         public string FilePath { get; set; }
-        public Day_3_Rucksack_Reorganization(string filePath)
+        public Rucksack_Reorganization(string filePath)
         {
             FilePath = filePath;
         }

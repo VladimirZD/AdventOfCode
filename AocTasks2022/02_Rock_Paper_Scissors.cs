@@ -4,7 +4,7 @@ using AdventOfCode.Interfaces;
 namespace AdventOfCode.AocTasks2022
 {
     [AocTask(2022, 2)]
-    public class Day_2_Rock_Paper_Scissors : IAocTask
+    public class Rock_Paper_Scissors : IAocTask
     {
         private string[] Rounds { get; set; }
         public Dictionary<char, char> LooseMoves { get; set; }
@@ -12,7 +12,7 @@ namespace AdventOfCode.AocTasks2022
         public Dictionary<char, char> SameMoves { get; set; }
         public Dictionary<char, int> MoveScores { get; set; }
         public string FilePath { get; set; }
-        public Day_2_Rock_Paper_Scissors(string filePath)
+        public Rock_Paper_Scissors(string filePath)
         {
             FilePath = filePath;
         }
