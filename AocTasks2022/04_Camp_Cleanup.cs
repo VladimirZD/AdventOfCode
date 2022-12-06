@@ -6,12 +6,12 @@ using System.IO;
 namespace AdventOfCode.AocTasks2022
 {
     [AocTask(2022, 4)]
-    public class Day_4_Camp_Cleanup : IAocTask
+    public class Camp_Cleanup : IAocTask
     {
         private string[][] ZonesRanges { get; set; }
         private int PartialOverLap { get; set; }
         public string FilePath { get; set; }
-        public Day_4_Camp_Cleanup(string filePath)
+        public Camp_Cleanup(string filePath)
         {
             FilePath = filePath;
         }

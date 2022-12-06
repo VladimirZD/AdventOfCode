@@ -10,13 +10,13 @@ using System.Xml.Linq;
 namespace AdventOfCode.AocTasks2022
 {
     [AocTask(2022, 6)]
-    public class Daay_6_Tuning_Trouble : IAocTask
+    public class Tuning_Trouble : IAocTask
     {
 
         public string FilePath { get; set; }
         public string Message { get; set; }
         public int SearchStart { get; set; }
-        public Daay_6_Tuning_Trouble(string filePath)
+        public Tuning_Trouble(string filePath)
         {
             FilePath = filePath;
             SearchStart = 0;

@@ -4,11 +4,11 @@ using AdventOfCode.Interfaces;
 namespace AdventOfCode.AocTasks2022
 {
     [AocTask(2022, 1)]
-    public class Day_1_Calorie_Counting : IAocTask
+    public class Calorie_Counting : IAocTask
     {
         public string FilePath { get; set; }
         public List<int> Numbers { get; set; }
-        public Day_1_Calorie_Counting(string filePath)
+        public Calorie_Counting(string filePath)
         {
             FilePath= filePath;
         }
