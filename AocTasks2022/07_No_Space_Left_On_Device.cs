@@ -40,7 +40,7 @@ namespace AdventOfCode.AocTasks2022
                         }
                         else
                         {
-                            currentPath = currentPath + (currentPath.EndsWith("/") ? $"{path}" : $"/{path}");
+                            currentPath += (currentPath.EndsWith("/") ? $"{path}" : $"/{path}");
                             
                         }
                         if (!DirData.ContainsKey(currentPath))

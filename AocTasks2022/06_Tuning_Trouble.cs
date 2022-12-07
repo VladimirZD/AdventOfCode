@@ -39,7 +39,6 @@ namespace AdventOfCode.AocTasks2022
                 var part = Message[i..(i + patLen)];
                 start = i + patLen;
                 int cnt = 0;
-                var usedChars = new HashSet<char>();
                 foreach (var letter in part)
                 {
                     int n = 0; ;
