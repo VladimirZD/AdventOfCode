@@ -118,7 +118,7 @@ namespace AdventOfCode.AocTasks2021
             var retValue = x >= 0 && x < width && y >= 0 && y < height;
             return retValue;
         }
-        static List<Octopus> GetCellsInRadius(List<Octopus> octopuses, Octopus start,int width, int height)
+        static List<Octopus> GetCellsInRadius(List<Octopus> octopuses, Octopus start, int width, int height)
         {
             var retValue = new List<Octopus>();
             int[] dx = { 0, 0, -1, 1, -1, -1, 1, 1 };

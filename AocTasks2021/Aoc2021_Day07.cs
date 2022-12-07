@@ -11,7 +11,7 @@ namespace AdventOfCode.AocTasks2021
 
         public Aoc2021_Day07(string filePath)
         {
-            FilePath= filePath;
+            FilePath = filePath;
         }
         public void PrepareData()
         {

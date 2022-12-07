@@ -1,11 +1,5 @@
 ﻿using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
-using Org.BouncyCastle.Asn1.Cms;
-using Org.BouncyCastle.Utilities;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Diagnostics;
-using System.Xml.Linq;
 
 namespace AdventOfCode.AocTasks2022
 {
@@ -20,22 +14,23 @@ namespace AdventOfCode.AocTasks2022
         {
             FilePath = filePath;
             SearchStart = 0;
+            Message = System.IO.File.ReadAllText(FilePath);
         }
         public void PrepareData()
         {
-            Message = System.IO.File.ReadAllText(FilePath);
+            
         }
         string IAocTask.Solve1()
         {
-            var retValue= FindUniquePatternStart(0, 4);
-            SearchStart= retValue;
+            var retValue = FindUniquePatternStart(0, 4);
+            SearchStart = retValue;
             return retValue.ToString();
         }
         string IAocTask.Solve2()
         {
             return FindUniquePatternStart(SearchStart, 14).ToString();
         }
-        private int  FindUniquePatternStart(int searchStart, int patLen)
+        private int FindUniquePatternStart(int searchStart, int patLen)
         {
             var start = 0;
             var msgAsSpan = Message.AsSpan();

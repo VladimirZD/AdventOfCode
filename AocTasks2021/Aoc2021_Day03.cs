@@ -9,7 +9,7 @@ namespace AdventOfCode.AocTasks2021
         public List<string> Data { get; set; }
         public Aoc2021_Day03(string filePath)
         {
-            FilePath= filePath;
+            FilePath = filePath;
         }
         public void PrepareData()
         {

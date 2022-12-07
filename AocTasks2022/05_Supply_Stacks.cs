@@ -1,10 +1,5 @@
 ﻿using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
-using Org.BouncyCastle.Asn1.Cms;
-using Org.BouncyCastle.Utilities;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Xml.Linq;
 
 namespace AdventOfCode.AocTasks2022
 {
@@ -37,11 +32,11 @@ namespace AdventOfCode.AocTasks2022
             void CreateBoxes(int colWidth, string[] boxData)
             {
 
-                var colCount = boxData[boxData.Length - 1][boxData[boxData.Length - 1].Length - 2]-48 ; // boxData2[boxData2.Length - 2]-48; 
+                var colCount = boxData[boxData.Length - 1][boxData[boxData.Length - 1].Length - 2] - 48; // boxData2[boxData2.Length - 2]-48; 
 
                 Boxes1 = new List<Stack<char>>();
                 Boxes2 = new List<Stack<char>>();
-                
+
                 for (var i = 0; i < colCount; i++)
                 {
                     Boxes1.Add(new Stack<char>());

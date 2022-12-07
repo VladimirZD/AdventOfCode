@@ -10,7 +10,7 @@ namespace AdventOfCode.AocTasks2022
         public List<int> Numbers { get; set; }
         public Calorie_Counting(string filePath)
         {
-            FilePath= filePath;
+            FilePath = filePath;
         }
         public void PrepareData()
         {
