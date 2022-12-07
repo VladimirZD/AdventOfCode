@@ -29,7 +29,7 @@ namespace AdventOfCode
         }
         private static void RunTasks(List<Type> tasks)
         {
-            
+
             foreach (var task in tasks)
             {
                 var aocTaskAttribute = task.GetCustomAttribute<AocTask>();

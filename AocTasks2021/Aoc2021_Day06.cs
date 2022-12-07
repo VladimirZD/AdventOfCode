@@ -11,7 +11,7 @@ namespace AdventOfCode.AocTasks2021
         public List<int> Lanterns { get; set; }
         public Aoc2021_Day06(string filePath)
         {
-            FilePath= filePath;
+            FilePath = filePath;
         }
         public void PrepareData()
         {

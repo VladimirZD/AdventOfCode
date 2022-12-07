@@ -1,7 +1,5 @@
 ﻿using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
-using System.Diagnostics;
-using System.IO;
 
 namespace AdventOfCode.AocTasks2022
 {
@@ -28,7 +26,7 @@ namespace AdventOfCode.AocTasks2022
                     retValue.Add(lineData);
                 }
             }
-            ZonesRanges=retValue.ToArray();
+            ZonesRanges = retValue.ToArray();
         }
         string IAocTask.Solve1()
         {

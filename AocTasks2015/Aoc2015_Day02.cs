@@ -10,7 +10,7 @@ namespace AdventOfCode.AocTasks2015
         public List<List<int>> PackageData { get; set; }
         public Aoc2015_Day02(string filePath)
         {
-            FilePath= filePath;
+            FilePath = filePath;
         }
         public void PrepareData()
         {

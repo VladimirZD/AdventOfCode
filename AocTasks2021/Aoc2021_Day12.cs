@@ -1,6 +1,5 @@
 ﻿using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
-using System.Net.Http.Headers;
 
 namespace AdventOfCode.AocTasks2021
 {
@@ -26,7 +25,7 @@ namespace AdventOfCode.AocTasks2021
         }
         string IAocTask.Solve1()
         {
-            var retValue=0;
+            var retValue = 0;
             var visitedCaves = new HashSet<string>
             {
                 START
@@ -46,7 +45,7 @@ namespace AdventOfCode.AocTasks2021
             };
             if (Caves != null)
             {
-                retValue= WalkThePath(START, Caves, visitedCaves, false);
+                retValue = WalkThePath(START, Caves, visitedCaves, false);
             }
             return retValue.ToString();
         }
