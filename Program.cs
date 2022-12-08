@@ -60,7 +60,13 @@ namespace AdventOfCode
         }
         private static string GetFormatedElapsed(TimeSpan time)
         {
-            return $"{time.TotalMicroseconds} µs";
+
+            var formatedValue = $"{time.TotalMicroseconds} µs";
+            if (time.TotalMicroseconds>=1000)
+            {
+                formatedValue = $"{time.Milliseconds} ms";
+            }
+            return $"{formatedValue}";
         }
         private static void CreateTaskDataFolder()
         {
