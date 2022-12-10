@@ -9,17 +9,17 @@ namespace AdventOfCode.AocTasks2022
     {
 
         public string[] Input { get; set; }
-        //public int[,] Trees { get; set; }
         public char[,] Trees { get; set; }
-        //public int[,] TreeScores { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        public int Result1 { get; set; }
         public int Result2 { get; set; }
         public Treetop_Tree_House(string filePath)
         {
             Input = File.ReadAllLines(filePath);
             //Input = "30373\n25512\n65332\n33549\n35390".Split('\n');
         }
+
         public void PrepareData()
         {
             Width = Input.Length;
@@ -35,27 +35,21 @@ namespace AdventOfCode.AocTasks2022
         }
         string IAocTask.Solve1()
         {
-            var maxX = Trees.GetUpperBound(0);
-            var maxY = Trees.GetUpperBound(1);
-            var visibleCnt = (maxX + 1 + maxY - 1) * 2;
-            Result2= 0;
+            var maxX = Width - 1;
+            var maxY = Height - 1;
+            var visibleCnt = (maxX + maxY) * 2;
+
+            Result2 = 0;
             for (var y = 1; y < maxY; y++)
             {
                 for (var x = 1; x < maxX; x++)
                 {
                     var currentTree = Trees[x, y];
-                    var visible= CheckTreeStatus(x, y, currentTree,out int distanceScore);
-                    if (distanceScore> Result2)
-                    {
-                        Result2 = distanceScore;
-                    }
-                    if (visible)
-                    {
-                        visibleCnt++;
-                    }
+                    var visible = CheckTreeStatus(x, y, currentTree, out int distanceScore);
+                    Result2 = distanceScore > Result2 ? distanceScore : Result2;
+                    visibleCnt += visible ? 1 : 0;
                 }
             }
-            Debug.Assert(visibleCnt == 1782);
             return visibleCnt.ToString();
         }
 
@@ -107,9 +101,9 @@ namespace AdventOfCode.AocTasks2022
         }
         string IAocTask.Solve2()
         {
-            Debug.Assert(Result2 == 474606);
             return Result2.ToString();
         }
+        
 
     }
 }

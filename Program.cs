@@ -1,4 +1,5 @@
-﻿using AdventOfCode.Attributes;
+﻿using AdventOfCode.AocTasks2022;
+using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
 using System.Diagnostics;
 using System.Net;
@@ -11,6 +12,7 @@ namespace AdventOfCode
     {
         static void Main(string[] args)
         {
+
             var tasks = GetAocTasks();
             Console.WriteLine($"Found {tasks.Count} Aoc Tasks");
             CookieData cookieData = new();
@@ -35,36 +37,83 @@ namespace AdventOfCode
                 var aocTaskAttribute = task.GetCustomAttribute<AocTask>();
                 if (aocTaskAttribute != null)
                 {
-                    Console.WriteLine($"Executing {task.Name}({aocTaskAttribute.Year}/{aocTaskAttribute.Day})");
                     string filePath = $@"{AppContext.BaseDirectory}TaskData\{aocTaskAttribute.Year}_{aocTaskAttribute.Day}.txt";
-                    var instance = (Activator.CreateInstance(task, filePath) as IAocTask);
-                    if (instance != null)
-                    {
-                        Stopwatch stopWatch = Stopwatch.StartNew();
-                        instance.PrepareData();
-                        Console.WriteLine($"\tData preparation done in {GetFormatedElapsed(stopWatch.Elapsed)} ");
-                        TimeSpan prevTimeSpan = stopWatch.Elapsed; ;
-                        if (instance != null)
-                        {
-                            var result1 = instance.Solve1();
-                            Console.WriteLine($"\tSolve1 result is {result1} done in {GetFormatedElapsed(stopWatch.Elapsed - prevTimeSpan)}");
-                            prevTimeSpan = stopWatch.Elapsed;
-                            var result2 = instance.Solve2();
-                            Console.WriteLine($"\tSolve2 result is {result2} done in {GetFormatedElapsed(stopWatch.Elapsed - prevTimeSpan)}");
-                            stopWatch.Stop();
-                            Console.WriteLine($"\tTotal time {stopWatch.Elapsed} ({GetFormatedElapsed(stopWatch.Elapsed)})");
-                        }
-                    }
+                    DoWarmUp(task, aocTaskAttribute, filePath);
+                    //var runTimes = new Dictionary<string, List<TimeSpan>>
+                    //{
+                    //    ["DataPreparation"] = new List<TimeSpan>(),
+                    //    ["Result1"] = new List<TimeSpan>(),
+                    //    ["Result2"] = new List<TimeSpan>(),
+                    //    ["Total"] = new List<TimeSpan>()
+                    //};
+                    DoFinalRun(task, aocTaskAttribute, filePath);
+                    //Console.WriteLine($"\tData preparation done in {GetFormatedElapsed(dataPreparationTime)} ");
+                    //Console.WriteLine($"\tSolve1 result is {result1} done in {GetFormatedElapsed(result1Time)}");
+                    //Console.WriteLine($"\tSolve2 result is {result2} done in {GetFormatedElapsed(stopWatch.Elapsed - result1Time - dataPreparationTime)}");
+                    //Console.WriteLine($"\tTotal time {stopWatch.Elapsed} ({GetFormatedElapsed(stopWatch.Elapsed)})");
+                    //var r = runTimes["DataPreparation"].Max();
+                    //var r2 = runTimes["DataPreparation"].Average<TimeSpan>(i => i.);
+                }
+
+            }
+        }
+
+        private static void DoFinalRun(Type task, AocTask? aocTaskAttribute, string filePath)
+        {
+            Console.WriteLine($"Executing {task.Name}({aocTaskAttribute.Year}/{aocTaskAttribute.Day})");
+            for (var i = 1; i < 2; i++)
+            {
+                var instance = (Activator.CreateInstance(task, filePath) as IAocTask);
+                if (instance != null)
+                {
+
+                    Stopwatch stopWatch = Stopwatch.StartNew();
+                    instance.PrepareData();
+                    var dataPreparationTime = stopWatch.Elapsed;
+
+                    var result1 = instance.Solve1();
+                    var result1Time = stopWatch.Elapsed - dataPreparationTime;
+                    var result2 = instance.Solve2();
+                    stopWatch.Stop();
+
+                    //runTimes["DataPreparation"].Add(dataPreparationTime);
+                    //runTimes["Result1"].Add(result1Time);
+                    //runTimes["Result2"].Add(stopWatch.Elapsed - result1Time - dataPreparationTime);
+                    //runTimes["Total"].Add(stopWatch.Elapsed);
+
+                    Console.WriteLine($"\tData preparation done in {GetFormatedElapsed(dataPreparationTime)} ");
+                    Console.WriteLine($"\tSolve1 result is {result1} done in {GetFormatedElapsed(result1Time)}");
+                    Console.WriteLine($"\tSolve2 result is {result2} done in {GetFormatedElapsed(stopWatch.Elapsed - result1Time - dataPreparationTime)}");
+                    Console.WriteLine($"\tTotal time {stopWatch.Elapsed} ({GetFormatedElapsed(stopWatch.Elapsed)})");
                 }
             }
         }
+
+        private static void DoWarmUp(Type task, AocTask? aocTaskAttribute, string filePath)
+        {
+            var warmUprounds = 50;
+            for (var i = 1; i <= warmUprounds; i++)
+            {
+                Console.WriteLine($"Warming up for {task.Name}({aocTaskAttribute.Year}/{aocTaskAttribute.Day}) round {i}/{warmUprounds}");
+                Console.CursorTop--;
+                var instance = (Activator.CreateInstance(task, filePath) as IAocTask);
+                if (instance != null)
+                {
+                    instance.PrepareData();
+                    _ = instance.Solve1();
+                    _ = instance.Solve2();
+
+                }
+            }
+            Console.CursorTop++;
+        }
+
         private static string GetFormatedElapsed(TimeSpan time)
         {
-
             var formatedValue = $"{time.TotalMicroseconds} µs";
             if (time.TotalMicroseconds>=1000)
             {
-                formatedValue = $"{time.Milliseconds} ms";
+                formatedValue = $"{time.TotalMilliseconds} ms";
             }
             return $"{formatedValue}";
         }
@@ -83,7 +132,6 @@ namespace AdventOfCode
         }
         public static async Task<string> GenerateTaskDataFile(string url, CookieData cookieData)
         {
-
             string result = "";
             var cookieContainer = new CookieContainer();
             cookieContainer.Add(new Cookie(cookieData.CookieName, cookieData.Value, "", cookieData.Domain));
@@ -102,7 +150,7 @@ namespace AdventOfCode
             foreach (var task in tasks)
             {
                 var aocTaskAttribute = task.GetCustomAttribute<AocTask>();
-                Console.Write($"\tDownloading task data :{task.Name}...");
+                Console.Write($"\tDownloading task data: {task.Name}...");
                 if (aocTaskAttribute != null)
                 {
                     var fileName = $"{aocTaskAttribute.Year}_{aocTaskAttribute.Day}.txt";
