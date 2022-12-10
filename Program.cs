@@ -57,7 +57,6 @@ namespace AdventOfCode
 
             }
         }
-
         private static void DoFinalRun(Type task, AocTask? aocTaskAttribute, string filePath)
         {
             Console.WriteLine($"Executing {task.Name}({aocTaskAttribute.Year}/{aocTaskAttribute.Day})");
@@ -88,10 +87,9 @@ namespace AdventOfCode
                 }
             }
         }
-
         private static void DoWarmUp(Type task, AocTask? aocTaskAttribute, string filePath)
         {
-            var warmUprounds = 50;
+            var warmUprounds = 10;
             for (var i = 1; i <= warmUprounds; i++)
             {
                 Console.WriteLine($"Warming up for {task.Name}({aocTaskAttribute.Year}/{aocTaskAttribute.Day}) round {i}/{warmUprounds}");
@@ -107,7 +105,6 @@ namespace AdventOfCode
             }
             Console.CursorTop++;
         }
-
         private static string GetFormatedElapsed(TimeSpan time)
         {
             var formatedValue = $"{time.TotalMicroseconds} µs";

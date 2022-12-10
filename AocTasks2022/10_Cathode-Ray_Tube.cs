@@ -17,7 +17,8 @@ namespace AdventOfCode.AocTasks2022
 
         private string[] Input { get; set; }
         private int Result1 { get; set; }
-        private Char[,] Crt { get; set; }
+        private string Result2 { get; set; }
+        //private Char[,] Crt { get; set; }
 
         public Cathod_Ray_Tube(string filePath)
         {
@@ -27,7 +28,8 @@ namespace AdventOfCode.AocTasks2022
         }
         public void PrepareData()
         {
-            Crt = new char[HEIGHT, WIDTH];
+            //Crt = new char[HEIGHT, WIDTH];
+            Result2 = "";
             var x = 1;
             double totalValue = 0;
 
@@ -35,12 +37,20 @@ namespace AdventOfCode.AocTasks2022
             for (var i = 0; i < instructions.Length; i++)
             {
                 double cycle = i + 1;
-                int currentRow = (int)((i / WIDTH) % HEIGHT);
+                //int currentRow = (int)((i / WIDTH) % HEIGHT);
                 int currentCol = (int)(i % WIDTH);
+
+                if (currentCol==0)
+                {
+                    Result2 += "\n";
+                }
+
+                string pixel = ".";
                 if ((x == currentCol || (x - 1) == currentCol) || (x + 1) == currentCol)
                 {
-                    Crt[currentRow, currentCol] = '#';
+                    pixel = "#";
                 }
+                Result2 +=pixel;
                 var cmd = instructions[i];
                 if (cycle == 20 || (cycle + 20) % 40 == 0)
                 {
@@ -59,23 +69,8 @@ namespace AdventOfCode.AocTasks2022
         }
         string IAocTask.Solve2()
         {
-            var retValue = GetPrintData(Crt);
-            return retValue.ToString();
+            return Result2;
         }
-        private string GetPrintData(char[,] data)
-        {
-            var line = Environment.NewLine;
-            for (var y = 0; y < HEIGHT; y++)
-            {
-                for (var x = 0; x < WIDTH; x++)
-                {
-                    line += data[y, x] == '#' ? '#' : '.';
-                }
-                line += Environment.NewLine;
-            }
-            return line;
-        }
-
     }
 }
 
