@@ -1,8 +1,6 @@
 ﻿using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
-using Org.BouncyCastle.Math;
 using System.Diagnostics;
-using static AdventOfCode.AocTasks2022.Monkey_in_the_Middle;
 
 namespace AdventOfCode.AocTasks2022
 {
@@ -32,7 +30,6 @@ namespace AdventOfCode.AocTasks2022
                 InspectedItems = 0L;
             }
         }
-
         private List<Monkey> Monkeys;
         private string[] Input { get; set; }
         private long Result1 { get; set; }
@@ -58,7 +55,7 @@ namespace AdventOfCode.AocTasks2022
                 Monkeys.Add(monkey);
             }
         }
-        private void PlayGame(int rounds,long reduceLevel)
+        private void PlayGame(int rounds,Func<long,long> reduceWorryLevel)
         {
             for (var r = 0; r < rounds; r++)
             {
@@ -71,14 +68,7 @@ namespace AdventOfCode.AocTasks2022
                         var startLevel = monkey.Items.Dequeue();
                         long argument = monkey.OperationArgument == "old" ? startLevel : long.Parse(monkey.OperationArgument);
                         long newLevel = (monkey.Operation == "+" ? startLevel + argument : startLevel * argument);
-                        if (rounds == 20)
-                        {
-                            newLevel /= reduceLevel;
-                        }
-                        else
-                        {
-                            newLevel %= reduceLevel;
-                        }
+                        newLevel=reduceWorryLevel(newLevel);
                         var isDivisibleBy = (newLevel % monkey.TestDivisibleBy) == 0;
                         var throwTo = isDivisibleBy ? monkey.OnTrueThrowTo : monkey.OnFalseThrowTo;
                         Monkeys[throwTo].Items.Enqueue(newLevel);
@@ -89,18 +79,18 @@ namespace AdventOfCode.AocTasks2022
         string IAocTask.Solve1()
         {
             PrepareData();
-            PlayGame(20,3);
-            Result1 = Monkeys.OrderByDescending(i => i.InspectedItems).Take(2).Aggregate(1L, (Result1, monkey) => Result1*monkey.InspectedItems);
-            Debug.Assert(Result1 == 99852);
+            PlayGame(20,level=>level/3);
+            Result1 = Monkeys.OrderByDescending(i => i.InspectedItems).Take(2).Aggregate(1L, (Result1, monkey) => Result1*monkey.InspectedItems); 
+            //Debug.Assert(Result1 == 99852);
             return Result1.ToString();
         }
         string IAocTask.Solve2()
         {
             PrepareData();
             long reduceLevel = Monkeys.Aggregate(1L, (reduceLevel, monkey) => reduceLevel* monkey.TestDivisibleBy);
-            PlayGame(10000, reduceLevel);
+            PlayGame(10000, level=>level % reduceLevel);
             Result2 = Monkeys.OrderByDescending(i => i.InspectedItems).Take(2).Aggregate(1L, (Result2, monkey) => Result2 * monkey.InspectedItems);
-            Debug.Assert(Result1 == 25935263541);
+            //Debug.Assert(Result1 == 25935263541);
             return Result2.ToString();
         }
     }
