@@ -13,7 +13,7 @@ namespace AdventOfCode.AocTasks2022
     public class Cathod_Ray_Tube : IAocTask
     {
         const int WIDTH = 40;
-        const int HEIGHT = 6;
+        //const int HEIGHT = 6;
 
         private string[] Input { get; set; }
         private int Result1 { get; set; }
