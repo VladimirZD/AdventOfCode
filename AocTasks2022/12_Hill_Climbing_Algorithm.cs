@@ -7,8 +7,6 @@ using static AdventOfCode.AocTasks2021.Aoc2021_Day09;
 namespace AdventOfCode.AocTasks2022
 {
     [AocTask(2022, 12)]
-
-
     public class Hill_Climbing_Algorithm : IAocTask
     {
         public record Cell
@@ -18,19 +16,15 @@ namespace AdventOfCode.AocTasks2022
             public bool Visited;
             public int Height;
             public int Distance;
-            public String Value;
 
-            public Cell(int x, int y, int height, string value)
+            public Cell(int x, int y, int height)
             {
                 X = x;
                 Y = y;
                 Height = height;
                 Distance = -1;
-                Value = value;
-                
             }
         }
-
         const char START = 'S';
         const char END = 'E';
         private string[] Input { get; set; }
@@ -44,14 +38,12 @@ namespace AdventOfCode.AocTasks2022
 
         public Hill_Climbing_Algorithm(string filePath)
         {
-            Input = File.ReadAllLines(filePath); 
+            Input = File.ReadAllLines(filePath);
             //Input = "Sabqponm\r\nabcryxxl\r\naccszExk\r\nacctuvwj\r\nabdefghi".Split("\r\n").ToArray();
         }
         public void PrepareData()
         {
             Cells = new List<Cell>();
-
-            //var data = Input.ToList();
             var data = Input;
             Height = data.Length;
             Width = data[0].Length;
@@ -62,9 +54,8 @@ namespace AdventOfCode.AocTasks2022
                 for (var x = 0; x < Width; x++)
                 {
                     var cellElevation = rowData[x];
-                    var cell = new Cell(x, y, cellElevation,cellElevation.ToString());
-                    
-                    if (cell.Height==START)
+                    var cell = new Cell(x, y, cellElevation);
+                    if (cell.Height == START)
                     {
                         cell.Height = 'a';
                         StartCell = cell;
@@ -72,7 +63,7 @@ namespace AdventOfCode.AocTasks2022
                     if (cell.Height == END)
                     {
                         cell.Height = 'z';
-                        EndCell= cell;
+                        EndCell = cell;
                     }
                     Cells.Add(cell);
                 }
@@ -80,45 +71,28 @@ namespace AdventOfCode.AocTasks2022
         }
         string IAocTask.Solve1()
         {
-            WalkToTheEnd(Cells, EndCell,StartCell);
+            WalkToTheStart(Cells, EndCell);
             Result1 = StartCell.Distance;
+            Debug.Assert(Result1 == 484);
             return Result1.ToString();
         }
         string IAocTask.Solve2()
         {
-
-            var data = Cells.Where(c => c.Height == StartCell.Height && c.Visited).ToList().OrderBy(c => c.Distance).ToList().First();
-            Result2 = data.Distance;
+            Result2 = Cells.Where(c => c.Height == StartCell.Height && c.Visited).Min(c => c.Distance);
+            Debug.Assert(Result2 == 478);
             return Result2.ToString();
         }
-
-        static void ResetCellStatus(List<Cell> cells)
-        {
-            for (var i = 0; i < cells.Count; i++)
-            {
-                var cell = cells[i]; ;
-                cell.Distance = -1;
-                cell.Visited = false;
-            }
-        }
-
-        private void WalkToTheEnd(List<Cell> cells, Cell start, Cell end)
+        private void WalkToTheStart(List<Cell> cells, Cell start)
         {
             var retValue = new List<Cell>();
             var queue = new Queue<Cell>();
-            HashSet<Cell> queeued = new HashSet<Cell>();
-            //ResetCellStatus(cells);
+            HashSet<Cell> queeued = new();
             start.Distance = 0;
             queue.Enqueue(start);
             while (queue.Count > 0)
             {
-                /*
-                 * ou'd like to reach E, but to save energy, you should do it in as few steps as possible. During each step, you can move exactly one square up, down, left, or right. 
-                 * To avoid needing to get out your climbing gear, the elevation of the destination square can be at most one higher than the elevation of your current square; that is, if your current elevation is m, you could step to elevation n, but not to elevation o. 
-                 * (This also means that the elevation of the destination square can be much lower than the elevation of your current square.)
-                 * */
                 var currentCell = queue.Dequeue();
-                var cellsToAdd = ProcessCell(currentCell, cells).Where(c => !c.Visited && ((currentCell.Height-c.Height) <= 1) && !queeued.Contains(c)).ToList();
+                var cellsToAdd = ProcessCell(currentCell, cells).Where(c => !c.Visited && ((currentCell.Height - c.Height) <= 1) && !queeued.Contains(c)).ToList();
                 for (var i = 0; i < cellsToAdd.Count; i++)
                 {
                     var cell = cellsToAdd[i];
@@ -126,15 +100,12 @@ namespace AdventOfCode.AocTasks2022
                     queeued.Add(cell);
                 }
             }
-            var retValue2 = cells.Where(c => c.Distance > -1).ToList();
         }
-
         private bool IsValidPos(int x, int y)
         {
             var retValue = x >= 0 && x < Width && y >= 0 && y < Height;
             return retValue;
         }
-
         private List<Cell> ProcessCell(Cell startCell, List<Cell> cells)
         {
             var retValue = new List<Cell>();
@@ -147,17 +118,17 @@ namespace AdventOfCode.AocTasks2022
                 var newY = startCell.Y + dy[i];
                 if (IsValidPos(newX, newY))
                 {
-                    var newCell = cells[GetCellIndex(Width, newX, newY)]; 
-                    if (!newCell.Visited)
+                    var newCell = cells[GetCellIndex(Width, newX, newY)];
+                    if (!newCell.Visited && ((StartCell.Height - newCell.Height) <= 1))
                     {
-                        newCell.Distance = startCell.Distance + 1;
                         retValue.Add(newCell);
+                        newCell.Distance = startCell.Distance + 1;
                     }
                 }
             }
             return retValue;
         }
-    private static int GetCellIndex(int Width, int x, int y)
+        private static int GetCellIndex(int Width, int x, int y)
         {
             return (Width * y) + x;
         }
