@@ -38,7 +38,7 @@ namespace AdventOfCode
                 if (aocTaskAttribute != null)
                 {
                     string filePath = $@"{AppContext.BaseDirectory}TaskData\{aocTaskAttribute.Year}_{aocTaskAttribute.Day}.txt";
-                    DoWarmUp(task, aocTaskAttribute, filePath);
+                    //DoWarmUp(task, aocTaskAttribute, filePath);
                     //var runTimes = new Dictionary<string, List<TimeSpan>>
                     //{
                     //    ["DataPreparation"] = new List<TimeSpan>(),
@@ -89,7 +89,7 @@ namespace AdventOfCode
         }
         private static void DoWarmUp(Type task, AocTask? aocTaskAttribute, string filePath)
         {
-            var warmUprounds = 10;
+            var warmUprounds = 20;
             for (var i = 1; i <= warmUprounds; i++)
             {
                 Console.WriteLine($"Warming up for {task.Name}({aocTaskAttribute.Year}/{aocTaskAttribute.Day}) round {i}/{warmUprounds}");
