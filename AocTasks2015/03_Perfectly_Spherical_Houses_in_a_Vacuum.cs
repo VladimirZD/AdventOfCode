@@ -4,11 +4,11 @@ using AdventOfCode.Interfaces;
 namespace AdventOfCode.AocTasks2015
 {
     [AocTask(2015, 3)]
-    public class Aoc2015_Day03 : IAocTask
+    public class Perfectly_Spherical_Houses_in_a_Vacuum : IAocTask
     {
         public string FilePath { get; set; }
         public string Directions { get; set; }
-        public Aoc2015_Day03(string filePath)
+        public Perfectly_Spherical_Houses_in_a_Vacuum(string filePath)
         {
             FilePath = filePath;
         }

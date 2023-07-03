@@ -5,11 +5,11 @@ using System.Diagnostics;
 namespace AdventOfCode.AocTasks2021
 {
     [AocTask(2021, 6)]
-    public class Aoc2021_Day06 : IAocTask
+    public class Lanternfish : IAocTask
     {
         public string FilePath { get; set; }
         public List<int> Lanterns { get; set; }
-        public Aoc2021_Day06(string filePath)
+        public Lanternfish(string filePath)
         {
             FilePath = filePath;
         }

@@ -20,14 +20,14 @@ namespace AdventOfCode.AocTasks2021
     }
 
     [AocTask(2021, 11)]
-    public class Aoc2021_Day11 : IAocTask
+    public class Dumbo_Octopus : IAocTask
     {
         public string FilePath { get; set; }
         public List<Octopus> Octopuses { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public int Result2 { get; set; }
-        public Aoc2021_Day11(string filePath)
+        public Dumbo_Octopus(string filePath)
         {
             FilePath = filePath;
         }

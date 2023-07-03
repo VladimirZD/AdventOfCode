@@ -4,11 +4,11 @@ using AdventOfCode.Interfaces;
 namespace AdventOfCode.AocTasks2015
 {
     [AocTask(2015, 2)]
-    public class Aoc2015_Day02 : IAocTask
+    public class I_Was_Told_There_Would_Be_No_Math : IAocTask
     {
         public string FilePath { get; set; }
         public List<List<int>> PackageData { get; set; }
-        public Aoc2015_Day02(string filePath)
+        public I_Was_Told_There_Would_Be_No_Math(string filePath)
         {
             FilePath = filePath;
         }

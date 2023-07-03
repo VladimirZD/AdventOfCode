@@ -3,7 +3,7 @@
 //namespace AdventOfCode2021Complete.AocTasks2021
 //{
 //    [AocTask(2021, 4)]
-//    public class Day4 : IAocTask
+//    public class Giant_Squid : IAocTask
 //    {
 //        public List<List<Point>> Points1 { get; set; }
 //        public List<List<Point>> Points2 { get; set; }
@@ -20,7 +20,7 @@
 //            }
 //        }
 
-//        public Day4(string filePath)
+//        public Giant_Squid(string filePath)
 //        {
 //            Points1 = LoadTaskinput(filePath,false);
 //            Points2 = LoadTaskinput(filePath,true);

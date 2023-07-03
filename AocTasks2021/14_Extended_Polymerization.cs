@@ -4,13 +4,13 @@ using AdventOfCode.Interfaces;
 namespace AdventOfCode.AocTasks2021
 {
     [AocTask(2021, 14)]
-    public class Aoc2021_Day14 : IAocTask
+    public class Extended_Polymerization : IAocTask
     {
         public string FilePath { get; set; }
         private Dictionary<string, string> Transformations { get; set; }
         private Dictionary<string, long> ElementPairs { get; set; }
         private string StartTemplate { get; set; }
-        public Aoc2021_Day14(string filePath)
+        public Extended_Polymerization(string filePath)
         {
             FilePath = filePath;
         }

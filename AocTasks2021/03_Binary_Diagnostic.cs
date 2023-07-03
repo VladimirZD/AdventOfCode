@@ -3,11 +3,11 @@ using AdventOfCode.Interfaces;
 namespace AdventOfCode.AocTasks2021
 {
     [AocTask(2021, 3)]
-    public class Aoc2021_Day03 : IAocTask
+    public class Binary_Diagnostic : IAocTask
     {
         public string FilePath { get; set; }
         public List<string> Data { get; set; }
-        public Aoc2021_Day03(string filePath)
+        public Binary_Diagnostic(string filePath)
         {
             FilePath = filePath;
         }

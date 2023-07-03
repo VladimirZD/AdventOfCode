@@ -16,12 +16,12 @@ namespace AdventOfCode.AocTasks2021
         }
     }
     [AocTask(2021, 13)]
-    public class Aoc2021_Day13 : IAocTask
+    public class Transparent_Origami : IAocTask
     {
         public string FilePath { get; set; }
         public List<Point> Points { get; set; }
         public List<string> Instructions { get; set; }
-        public Aoc2021_Day13(string filePath)
+        public Transparent_Origami(string filePath)
         {
             FilePath = filePath;
         }

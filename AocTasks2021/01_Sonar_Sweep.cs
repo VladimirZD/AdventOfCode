@@ -4,11 +4,11 @@ using AdventOfCode.Interfaces;
 namespace AdventOfCode.AocTasks2021
 {
     [AocTask(2021, 1)]
-    public class Aoc2021_Day01 : IAocTask
+    public class Sonar_Sweep : IAocTask
     {
         public string FilePath { get; set; }
         public List<int> Numbers { get; set; }
-        public Aoc2021_Day01(string filePath)
+        public Sonar_Sweep(string filePath)
         {
             FilePath = filePath;
         }

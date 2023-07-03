@@ -3,7 +3,7 @@ using AdventOfCode.Interfaces;
 namespace AdventOfCode.AocTasks2021
 {
     [AocTask(2021, 5)]
-    public class Aoc2021_Day05 : IAocTask
+    public class Hydrothermal_Venture : IAocTask
     {
         public string FilePath { get; set; }
         public List<List<Point>> Points1 { get; set; }
@@ -20,7 +20,7 @@ namespace AdventOfCode.AocTasks2021
                 Y = y;
             }
         }
-        public Aoc2021_Day05(string filePath)
+        public Hydrothermal_Venture(string filePath)
         {
             FilePath = filePath;
         }

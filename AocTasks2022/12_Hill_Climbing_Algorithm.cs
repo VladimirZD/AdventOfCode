@@ -2,7 +2,6 @@
 using AdventOfCode.Interfaces;
 using System.Diagnostics;
 using System.Drawing;
-using static AdventOfCode.AocTasks2021.Aoc2021_Day09;
 
 namespace AdventOfCode.AocTasks2022
 {

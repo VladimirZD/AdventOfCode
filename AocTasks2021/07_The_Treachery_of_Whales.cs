@@ -4,12 +4,12 @@ using AdventOfCode.Interfaces;
 namespace AdventOfCode.AocTasks2021
 {
     [AocTask(2021, 7)]
-    public class Aoc2021_Day07 : IAocTask
+    public class The_Treachery_of_Whales : IAocTask
     {
         public string FilePath { get; set; }
         public List<int> Crabs { get; set; }
 
-        public Aoc2021_Day07(string filePath)
+        public The_Treachery_of_Whales(string filePath)
         {
             FilePath = filePath;
         }
@@ -19,9 +19,7 @@ namespace AdventOfCode.AocTasks2021
         }
         string IAocTask.Solve1()
         {
-
             var minFuelUsed = int.MaxValue;
-            int position;
             var destinations = Enumerable.Range(1, Crabs.Max());
             foreach (var destination in destinations)
             {
@@ -34,7 +32,6 @@ namespace AdventOfCode.AocTasks2021
                 if (fuelUsed < minFuelUsed)
                 {
                     minFuelUsed = fuelUsed;
-                    position = destination;
                 }
             }
             return minFuelUsed.ToString();
@@ -42,7 +39,6 @@ namespace AdventOfCode.AocTasks2021
         string IAocTask.Solve2()
         {
             var minFuelUsed = int.MaxValue;
-            var position = 0;
             var destinations = Enumerable.Range(1, Crabs.Max());
             foreach (var destination in destinations)
             {
@@ -55,7 +51,6 @@ namespace AdventOfCode.AocTasks2021
                 if (fuelUsed < minFuelUsed)
                 {
                     minFuelUsed = fuelUsed;
-                    position = destination;
                 }
             }
             return minFuelUsed.ToString();

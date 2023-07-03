@@ -5,11 +5,11 @@
 //namespace AdventOfCode2021Complete.AocTasks2021
 //{
 //    [AocTask(2021, 8)]
-//    public class Day8 : IAocTask
+//    public class Seven_Segment_Search : IAocTask
 //    {
 //        public List<string> SignalData{ get; set; }
 //        public List<string> SegmentInfo { get; set; }
-//        public Day8(string filePath)
+//        public Seven_Segment_Search(string filePath)
 //        {
 //            SignalData= LoadTaskinput(filePath);
 //            SegmentInfo = new List<string>

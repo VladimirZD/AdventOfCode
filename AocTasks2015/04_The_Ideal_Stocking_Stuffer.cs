@@ -7,10 +7,10 @@
 //namespace AdventOfCode.AocTasks2015
 //{
 //    [AocTask(2015, 4)]
-//    public class Aoc2015_Day04 : IAocTask
+//    public class The_Ideal_Stocking_Stuffer : IAocTask
 //    {
 //        public List<List<int>> PackageData{ get; set; }
-//        public Aoc2015_Day04(string filePath)
+//        public The_Ideal_Stocking_Stuffer (string filePath)
 //        {
 //            PackageData = LoadTaskinput(filePath);
 //        }

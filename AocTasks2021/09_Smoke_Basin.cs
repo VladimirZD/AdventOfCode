@@ -5,7 +5,7 @@ using AdventOfCode.Interfaces;
 namespace AdventOfCode.AocTasks2021
 {
     [AocTask(2021, 9)]
-    public class Aoc2021_Day09 : IAocTask
+    public class Smoke_Basinc : IAocTask
     {
         public record Cell
         {
@@ -27,7 +27,7 @@ namespace AdventOfCode.AocTasks2021
         public int Width { get; set; }
         public int Height { get; set; }
         public List<Cell> MinPoints { get; set; }
-        public Aoc2021_Day09(string filePath)
+        public Smoke_Basinc(string filePath)
         {
             FilePath = filePath;
         }

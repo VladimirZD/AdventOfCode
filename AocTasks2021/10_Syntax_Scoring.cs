@@ -4,7 +4,7 @@ using AdventOfCode.Interfaces;
 namespace AdventOfCode.AocTasks2021
 {
     [AocTask(2021, 10)]
-    public class Aoc2021_Day10 : IAocTask
+    public class Syntax_Scoring : IAocTask
     {
         public string FilePath { get; set; }
         public Dictionary<char, char> OpenClosePairLookup { get; set; }
@@ -12,7 +12,7 @@ namespace AdventOfCode.AocTasks2021
         public Dictionary<char, int> AutoCompleteScoresLookup { get; set; }
         public string[] Lines { get; set; }
         public List<long> AutoCompletes { get; set; }
-        public Aoc2021_Day10(string filePath)
+        public Syntax_Scoring(string filePath)
         {
             FilePath = filePath;
         }

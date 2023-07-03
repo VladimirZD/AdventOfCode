@@ -4,13 +4,13 @@ using AdventOfCode.Interfaces;
 namespace AdventOfCode.AocTasks2021
 {
     [AocTask(2021, 12)]
-    public class Aoc2021_Day12 : IAocTask
+    public class Passage_Pathing : IAocTask
     {
         public string FilePath { get; set; }
         private const string START = "start";
         private const string END = "end";
         public Dictionary<string, string[]> Caves { get; set; }
-        public Aoc2021_Day12(string filePath)
+        public Passage_Pathing(string filePath)
         {
             FilePath = filePath;
         }
