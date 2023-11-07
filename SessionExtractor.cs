@@ -22,15 +22,20 @@ namespace AdventOfCode
                 Domain = domain;
                 Value = value;
             }
+            public CookieData()
+            {
+                CookieName = COOKIE_NAME;
+                Domain = HOST_KEY;
+            }
         }
 
         public const string HOST_KEY = ".adventofcode.com";
         public const string COOKIE_NAME = "session";
-        public static CookieData GetAocSessinCookie()
+        public static CookieData GetAocSessionCookie()
         {
 
             string localAppdata = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            string chromeRootPath = localAppdata + @"\Google\Chrome\User Data\";
+            string chromeRootPath = localAppdata + @"\Google\Chrome\User Data";
             string localStatePath = chromeRootPath + @"\Local State";
             string cookieDbPath = chromeRootPath + @"\Default\Network\Cookies";
 
@@ -75,15 +80,19 @@ namespace AdventOfCode
             }
             return sR;
         }
-
         private static byte[] GetAocSessionCookieFromChrome(string cookieDbPath)
         {
-            string connString = @"URI=file:" + cookieDbPath;
-            SQLiteConnection con = new SQLiteConnection(connString);
-            con.Open();
-            SQLiteCommand cmd = new SQLiteCommand(con);
-            cmd.CommandText = $"SELECT encrypted_value FROM Cookies WHERE host_key='{HOST_KEY}' and name='{COOKIE_NAME}'";
-            var sessionKey = (byte[])cmd.ExecuteScalar();
+            SQLiteConnectionStringBuilder connectionStringBuilder = new SQLiteConnectionStringBuilder();
+            connectionStringBuilder.DataSource = cookieDbPath;
+            connectionStringBuilder.ReadOnly = true;
+            byte[] sessionKey;
+            using (SQLiteConnection con = new SQLiteConnection(connectionStringBuilder.ConnectionString))
+            {
+                con.Open();
+                SQLiteCommand cmd = new SQLiteCommand(con);
+                cmd.CommandText = $"SELECT encrypted_value FROM Cookies WHERE host_key='{HOST_KEY}' and name='{COOKIE_NAME}'";
+                sessionKey = (byte[])cmd.ExecuteScalar();
+            }
             return sessionKey;
         }
         private static byte[] GetDecryptKey(string localStatePath)

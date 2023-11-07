@@ -3,6 +3,7 @@ using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
 using System.Diagnostics;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using static AdventOfCode.SessionExtractor;
 
@@ -10,24 +11,33 @@ namespace AdventOfCode
 {
     internal class Program
     {
+        private const string AOC_WEB_BASE_URL = "https://adventofcode.com/";
         static void Main(string[] args)
         {
 
             var tasks = GetAocTasks();
             Console.WriteLine($"Found {tasks.Count} Aoc Tasks");
-            CookieData cookieData = new();
-            try
+            //CookieData cookieData = new();
+
+            //Console.WriteLine("Trying to find AOC session cookie in Chrome");
+            //cookieData = SessionExtractor.GetAocSessionCookie(); //from version 114 Chrome is opening DB in exclusive mode
+            CookieData  cookieData = GetCookieFromFile();
+            if (ValidateCookie(cookieData))
             {
-                Console.WriteLine("Trying to find AOC session cookie in Chrome");
-                cookieData = SessionExtractor.GetAocSessinCookie();
+                CreateTaskDataFolder();
+                DownloadTaskData(tasks, cookieData);
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine($"Failed to find session cookie. Can't download task imput. Will skip tasks with no input\nError{ex}");
+                Console.WriteLine($"Session cookie is invalid. Can't download task imput. Will skip tasks with no input.");
             }
-            CreateTaskDataFolder();
-            DownloadTaskData(tasks, cookieData);
             RunTasks(tasks);
+        }
+        private static CookieData GetCookieFromFile()
+        {
+            var cookieData = new CookieData();
+            cookieData.Value = File.ReadAllText($"{AppContext.BaseDirectory}\\CookieData.txt");
+            return cookieData;
         }
         private static void RunTasks(List<Type> tasks)
         {
@@ -46,7 +56,14 @@ namespace AdventOfCode
                     //    ["Result2"] = new List<TimeSpan>(),
                     //    ["Total"] = new List<TimeSpan>()
                     //};
-                    DoFinalRun(task, aocTaskAttribute, filePath);
+                    if (File.Exists(filePath))
+                    {
+                        DoFinalRun(task, aocTaskAttribute, filePath);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Task input file for task {aocTaskAttribute.Year}/{aocTaskAttribute.Day} not found, skipping task");
+                    }
                     //Console.WriteLine($"\tData preparation done in {GetFormatedElapsed(dataPreparationTime)} ");
                     //Console.WriteLine($"\tSolve1 result is {result1} done in {GetFormatedElapsed(result1Time)}");
                     //Console.WriteLine($"\tSolve2 result is {result2} done in {GetFormatedElapsed(stopWatch.Elapsed - result1Time - dataPreparationTime)}");
@@ -141,6 +158,15 @@ namespace AdventOfCode
             }
             return result;
         }
+        private static bool ValidateCookie(CookieData cookieData)
+        {
+            var url = $"{AOC_WEB_BASE_URL}";
+            var downloadTask = GenerateTaskDataFile(url, cookieData);
+            downloadTask.Wait();
+            var textData = downloadTask.Result;
+            var isCookieValid = !textData.Contains("[Log In]");
+            return isCookieValid;
+        }
         private static void DownloadTaskData(List<System.Type> tasks, CookieData cookieData)
         {
             Console.WriteLine($@"Downloading task data to folder {AppContext.BaseDirectory}TaskData");
@@ -155,7 +181,7 @@ namespace AdventOfCode
                     string msg = $"File {fileName} exist, skipping download";
                     if (!File.Exists(filePath))
                     {
-                        var url = $"https://adventofcode.com/{aocTaskAttribute.Year}/day/{aocTaskAttribute.Day}/input";
+                        var url = $"{AOC_WEB_BASE_URL}{aocTaskAttribute.Year}/day/{aocTaskAttribute.Day}/input";
                         var downloadTask = GenerateTaskDataFile(url, cookieData);
                         downloadTask.Wait();
                         var textData = downloadTask.Result;
