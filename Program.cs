@@ -32,7 +32,9 @@ namespace AdventOfCode
         private static CookieData GetCookieFromFile()
         {
             var cookieData = new CookieData();
-            cookieData.Value = File.ReadAllText($"{AppContext.BaseDirectory}\\CookieData.txt");
+            var cookieFilePath = Path.Combine(AppContext.BaseDirectory, "CookieData.txt");
+            //cookieData.Value = File.ReadAllText($"{AppContext.BaseDirectory}\\CookieData.txt");
+            cookieData.Value = File.ReadAllText(cookieFilePath);
             return cookieData;
         }
         private static void RunTasks(List<Type> tasks)
