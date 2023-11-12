@@ -1,7 +1,5 @@
 ﻿using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
-using Microsoft.VisualBasic;
-using System.Linq.Expressions;
 
 namespace AdventOfCode.AocTasks2022
 {
@@ -9,7 +7,7 @@ namespace AdventOfCode.AocTasks2022
     public class Security_Through_Obscurity : IAocTask
     {
         private int Sol1;
-        private string Sol2;
+        private int Sol2;
         public string FilePath { get; set; }
         public string[] Input { get; set; }
         public List<string> ValidRooms { get; set; }
@@ -70,8 +68,8 @@ namespace AdventOfCode.AocTasks2022
         }
         private void Solve2()
         {
-
             var decryptedRooms = new List<string>();
+            Sol2 = 0;
 
             foreach (var room in ValidRooms)
             {
@@ -80,20 +78,21 @@ namespace AdventOfCode.AocTasks2022
                 var roomData = room[0..(hashStartIndex - 4)];
                 var decrypted = DecryptRoomName(roomData, sectorID);
                 decryptedRooms.Add(decrypted);
-
+                if (decrypted.IndexOf("northpole object storage", 0) != -1)
+                {
+                    Sol2 = sectorID;
+                    break;
+                }
             }
-            Sol2 = decryptedRooms.Where(d=>d.Contains("storage")).FirstOrDefault();
         }
-
         public static string DecryptRoomName(string roomName, int sectorID)
         {
             string decryptedName = "";
-
             foreach (char c in roomName)
             {
                 if (c == '-')
                 {
-                    decryptedName+=" ";
+                    decryptedName += " ";
                 }
                 else if (char.IsLetter(c))
                 {
@@ -109,3 +108,4 @@ namespace AdventOfCode.AocTasks2022
         }
     }
 }
+

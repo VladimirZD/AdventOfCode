@@ -16,20 +16,11 @@ namespace AdventOfCode.AocTasks2022
         public Squares_With_Three_Sides(string filePath)
         {
             FilePath = filePath;
-            //Input = File.ReadAllLines(filePath);
-            //var d = File.ReadAllText(filePath).Split('\n');
-            //var parsedData = File.ReadAllText(filePath).Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
-            //                  .Select(line => line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-            //                                      .Select(int.Parse)
-            //                                      .ToArray())
-            //                  .ToArray();
             Input = File.ReadAllText(filePath).Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
                               .Select(line => line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                                                   .Select(int.Parse)
                                                   .ToArray())
                               .ToArray();
-            //var data = Input.Split("  ").Where(d => !string.IsNullOrEmpty(d.Trim())).ToArray();
-            //Input = "ULL\r\nRRDDD\r\nLURDL\r\nUUUUD".Split("\r\n");
         }
         public void PrepareData()
         {

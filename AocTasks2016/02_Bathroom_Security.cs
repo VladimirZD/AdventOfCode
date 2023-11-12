@@ -16,7 +16,6 @@ namespace AdventOfCode.AocTasks2022
         {
             FilePath = filePath;
             Input = File.ReadAllLines(filePath);
-            //Input = "ULL\r\nRRDDD\r\nLURDL\r\nUUUUD".Split("\r\n");
         }
         public void PrepareData()
         {

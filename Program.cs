@@ -1,9 +1,7 @@
-﻿using AdventOfCode.AocTasks2022;
-using AdventOfCode.Attributes;
+﻿using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
 using System.Diagnostics;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Reflection;
 using static AdventOfCode.SessionExtractor;
 
@@ -17,7 +15,7 @@ namespace AdventOfCode
 
             var tasks = GetAocTasks();
             Console.WriteLine($"Found {tasks.Count} Aoc Tasks");
-            CookieData  cookieData = GetCookieFromFile();
+            CookieData cookieData = GetCookieFromFile();
             if (ValidateCookie(cookieData))
             {
                 CreateTaskDataFolder();
@@ -122,7 +120,7 @@ namespace AdventOfCode
         private static string GetFormatedElapsed(TimeSpan time)
         {
             var formatedValue = $"{time.TotalMicroseconds} µs";
-            if (time.TotalMicroseconds>=1000)
+            if (time.TotalMicroseconds >= 1000)
             {
                 formatedValue = $"{time.TotalMilliseconds} ms";
             }
@@ -151,6 +149,10 @@ namespace AdventOfCode
             {
                 using HttpResponseMessage response = client.GetAsync(url).Result;
                 using HttpContent content = response.Content;
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    throw new Exception($"Error running task. HTTP Status: {response.StatusCode},error: {response.ReasonPhrase}");
+                }
                 result = content.ReadAsStringAsync().Result;
             }
             return result;
