@@ -33,7 +33,6 @@ namespace AdventOfCode
         {
             var cookieData = new CookieData();
             var cookieFilePath = Path.Combine(AppContext.BaseDirectory, "CookieData.txt");
-            //cookieData.Value = File.ReadAllText($"{AppContext.BaseDirectory}\\CookieData.txt");
             cookieData.Value = File.ReadAllText(cookieFilePath);
             return cookieData;
         }

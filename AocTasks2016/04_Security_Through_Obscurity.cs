@@ -1,5 +1,6 @@
 ﻿using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
+using Microsoft.VisualBasic;
 using System.Linq.Expressions;
 
 namespace AdventOfCode.AocTasks2022
@@ -8,17 +9,15 @@ namespace AdventOfCode.AocTasks2022
     public class Security_Through_Obscurity : IAocTask
     {
         private int Sol1;
-        private int Sol2;
+        private string Sol2;
         public string FilePath { get; set; }
         public string[] Input { get; set; }
-        public List<string> ValidRooms { get;set; }
+        public List<string> ValidRooms { get; set; }
 
         public Security_Through_Obscurity(string filePath)
         {
             FilePath = filePath;
             Input = File.ReadAllLines(filePath);
-            //Input = "aaaaa-bbb-z-y-x-123[abxyz]\r\na-b-c-d-e-f-g-h-987[abcde]\r\nnot-a-real-room-404[oarel]\r\ntotally-real-room-200[decoy]".Split("\r\n");
-            //Input = "ULL\r\nRRDDD\r\nLURDL\r\nUUUUD".Split("\r\n");
         }
         public void PrepareData()
         {
@@ -31,13 +30,13 @@ namespace AdventOfCode.AocTasks2022
         }
         string IAocTask.Solve2()
         {
-
+            Solve2();
             return Sol2.ToString();
         }
         private void Solve()
         {
             var sectorSum = 0;
-            ValidRooms= new List<string>();
+            ValidRooms = new List<string>();
             foreach (var line in Input)
             {
                 var letters = new Dictionary<char, int>();
@@ -60,7 +59,7 @@ namespace AdventOfCode.AocTasks2022
                     }
                 }
                 var orderedLetters = letters.OrderByDescending(l => l.Value).ThenBy(l => l.Key).Select(i => i.Key).ToArray();
-                string expectedHash= new string(orderedLetters)[0..5];
+                string expectedHash = new string(orderedLetters)[0..5];
                 if (expectedHash == hash)
                 {
                     sectorSum += sectorID;
@@ -68,6 +67,45 @@ namespace AdventOfCode.AocTasks2022
                 }
             }
             Sol1 = sectorSum;
+        }
+        private void Solve2()
+        {
+
+            var decryptedRooms = new List<string>();
+
+            foreach (var room in ValidRooms)
+            {
+                var hashStartIndex = room.IndexOf('[');
+                var sectorID = int.Parse(room[(hashStartIndex - 3)..hashStartIndex]);
+                var roomData = room[0..(hashStartIndex - 4)];
+                var decrypted = DecryptRoomName(roomData, sectorID);
+                decryptedRooms.Add(decrypted);
+
+            }
+            Sol2 = decryptedRooms.Where(d=>d.Contains("storage")).FirstOrDefault();
+        }
+
+        public static string DecryptRoomName(string roomName, int sectorID)
+        {
+            string decryptedName = "";
+
+            foreach (char c in roomName)
+            {
+                if (c == '-')
+                {
+                    decryptedName+=" ";
+                }
+                else if (char.IsLetter(c))
+                {
+                    char newChar = (char)((c - 'a' + sectorID) % 26 + 'a');
+                    decryptedName += newChar.ToString();
+                }
+                else
+                {
+                    decryptedName += c.ToString();
+                }
+            }
+            return decryptedName;
         }
     }
 }
