@@ -7,62 +7,73 @@ namespace AdventOfCode.AocTasks2022
     [AocTask(2016, 2)]
     public class Bathroom_Security : IAocTask
     {
-        private int Sol1;
-        private int Sol2;
+        private string Sol1;
+        private string Sol2;
         public string FilePath { get; set; }
         public string[] Input { get; set; }
-        public string Message1 { get; set; }
-        public string Message2 { get; set; }
+
         public Bathroom_Security(string filePath)
         {
             FilePath = filePath;
-            Input = File.ReadAllText(filePath).Split(", ");
-            Input = "ULLRRDDDLURDLUUUUD".Split("");
+            Input = File.ReadAllLines(filePath);
+            //Input = "ULL\r\nRRDDD\r\nLURDL\r\nUUUUD".Split("\r\n");
         }
         public void PrepareData()
         {
-            
+                        
         }
         string IAocTask.Solve1()
         {
-            DoTheWalk();
+            string[] keyPad = new string[] { "123", "456", "789" };
+            Sol1 = FindDigits(keyPad,1,1);
             return Sol1.ToString();
-        }
-        private static int GetDistance(int x, int y)
-        {
-            return Math.Abs(0 - x) + Math.Abs(0 - y);
         }
         string IAocTask.Solve2()
         {
+            string[] keyPad = new string[] { "xx1xx", "x234x", "56789","xABCx","xxDxx" };
+            Sol2 = FindDigits(keyPad,0,2);
             return Sol2.ToString();
         }
-        private void DoTheWalk()
+        private string  FindDigits(string[] keyPad,int startX,int startY)
         {
-            var (currentX, currentY) = (0,0);
-            var currentDirection = 0;
-            var visitedLocations = new HashSet<(int, int)>();
-            visitedLocations.Add((0, 0));
-            foreach (var move in Input) 
+            int currentX = startX;
+            int currentY = startY;
+            int dx = 0;
+            int dy = 0;
+            var digits = new List<char>();
+            var keyPadLength = keyPad.Length-1;
+            foreach (var line in Input) 
             {
-                var distance = int.Parse(move[1..].ToString());
-                var turn = move[0].ToString();
-                currentDirection+=(turn == "R" ? 1 : -1);
-                currentDirection = (currentDirection < 0 ? 3 : currentDirection)%4;
-                for (var  i = 1; i <= distance;i++)
+                foreach (var move in line)
                 {
-                    //currentX += dx[currentDirection];
-                    //currentY += dy[currentDirection];
-                    if (visitedLocations.Contains((currentX, currentY)) && Sol2 == 0)
+                    dx = 0;
+                    dy = 0;
+                    switch (move)
                     {
-                        Sol2 = GetDistance(currentX, currentY);
+                        case 'U':
+                            dy = -1;
+                            break;
+                        case 'D':
+                            dy = 1;
+                            break;
+                        case 'L':
+                            dx = -1;
+                            break;
+                        case 'R':
+                            dx = 1;
+                            break;
+                        default:
+                            break;
                     }
-                    else
+                    if (currentX + dx>=0 && currentX + dx <= keyPadLength && currentY + dy >= 0 && currentY + dy <= keyPadLength && keyPad[currentX + dx][currentY+dy]!='x')
                     {
-                        visitedLocations.Add((currentX, currentY));
+                        currentX += dx;
+                        currentY += dy;
                     }
                 }
+                digits.Add(keyPad[currentY][currentX]);
             }
-            Sol1=GetDistance(currentX, currentY);
+            return string.Join("",digits);
         }
     }
 }

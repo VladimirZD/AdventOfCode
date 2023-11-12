@@ -17,10 +17,6 @@ namespace AdventOfCode
 
             var tasks = GetAocTasks();
             Console.WriteLine($"Found {tasks.Count} Aoc Tasks");
-            //CookieData cookieData = new();
-
-            //Console.WriteLine("Trying to find AOC session cookie in Chrome");
-            //cookieData = SessionExtractor.GetAocSessionCookie(); //from version 114 Chrome is opening DB in exclusive mode
             CookieData  cookieData = GetCookieFromFile();
             if (ValidateCookie(cookieData))
             {
