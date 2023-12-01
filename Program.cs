@@ -1,19 +1,27 @@
-﻿using AdventOfCode.Attributes;
+﻿using AdventOfCode.AocTasks2022;
+using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Running;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 using static AdventOfCode.SessionExtractor;
 
 namespace AdventOfCode
 {
-    internal class Program
+    [SimpleJob(RuntimeMoniker.Net80)]
+    public class Program
     {
         private const string AOC_WEB_BASE_URL = "https://adventofcode.com/";
         static void Main(string[] args)
         {
-
-            var tasks = GetAocTasks();
+            
+           //var summary = BenchmarkRunner.Run<Program>();
+           //return;
+            var tasks = GetAocTasks().Where(t=>t.GetCustomAttribute<AocTask>()?.Year==2023).ToList();
             Console.WriteLine($"Found {tasks.Count} Aoc Tasks");
             CookieData cookieData = GetCookieFromFile();
             if (ValidateCookie(cookieData))
@@ -34,6 +42,17 @@ namespace AdventOfCode
             cookieData.Value = File.ReadAllText(cookieFilePath);
             return cookieData;
         }
+
+        [Benchmark()]
+        public void DoTheBenchmark()
+        {
+            //var aocTaskAttribute = task.GetCustomAttribute<AocTask>();
+            string filePath = $@"D:\Development\AdventOfCodeComplete\bin\Release\net8.0\TaskData\2023_1.txt";
+            var solver = (IAocTask) new Trebuchet(filePath) ;
+            solver.PrepareData();
+            _= solver.Solve1();
+            _= solver.Solve2();
+        }
         private static void RunTasks(List<Type> tasks)
         {
 
@@ -43,14 +62,6 @@ namespace AdventOfCode
                 if (aocTaskAttribute != null)
                 {
                     string filePath = $@"{AppContext.BaseDirectory}TaskData\{aocTaskAttribute.Year}_{aocTaskAttribute.Day}.txt";
-                    //DoWarmUp(task, aocTaskAttribute, filePath);
-                    //var runTimes = new Dictionary<string, List<TimeSpan>>
-                    //{
-                    //    ["DataPreparation"] = new List<TimeSpan>(),
-                    //    ["Result1"] = new List<TimeSpan>(),
-                    //    ["Result2"] = new List<TimeSpan>(),
-                    //    ["Total"] = new List<TimeSpan>()
-                    //};
                     if (File.Exists(filePath))
                     {
                         DoFinalRun(task, aocTaskAttribute, filePath);
@@ -59,14 +70,7 @@ namespace AdventOfCode
                     {
                         Console.WriteLine($"Task input file for task {aocTaskAttribute.Year}/{aocTaskAttribute.Day} not found, skipping task");
                     }
-                    //Console.WriteLine($"\tData preparation done in {GetFormatedElapsed(dataPreparationTime)} ");
-                    //Console.WriteLine($"\tSolve1 result is {result1} done in {GetFormatedElapsed(result1Time)}");
-                    //Console.WriteLine($"\tSolve2 result is {result2} done in {GetFormatedElapsed(stopWatch.Elapsed - result1Time - dataPreparationTime)}");
-                    //Console.WriteLine($"\tTotal time {stopWatch.Elapsed} ({GetFormatedElapsed(stopWatch.Elapsed)})");
-                    //var r = runTimes["DataPreparation"].Max();
-                    //var r2 = runTimes["DataPreparation"].Average<TimeSpan>(i => i.);
                 }
-
             }
         }
         private static void DoFinalRun(Type task, AocTask? aocTaskAttribute, string filePath)
@@ -87,11 +91,6 @@ namespace AdventOfCode
                     var result2 = instance.Solve2();
                     stopWatch.Stop();
 
-                    //runTimes["DataPreparation"].Add(dataPreparationTime);
-                    //runTimes["Result1"].Add(result1Time);
-                    //runTimes["Result2"].Add(stopWatch.Elapsed - result1Time - dataPreparationTime);
-                    //runTimes["Total"].Add(stopWatch.Elapsed);
-
                     Console.WriteLine($"\tData preparation done in {GetFormatedElapsed(dataPreparationTime)} ");
                     Console.WriteLine($"\tSolve1 result is {result1} done in {GetFormatedElapsed(result1Time)}");
                     Console.WriteLine($"\tSolve2 result is {result2} done in {GetFormatedElapsed(stopWatch.Elapsed - result1Time - dataPreparationTime)}");
@@ -101,7 +100,7 @@ namespace AdventOfCode
         }
         private static void DoWarmUp(Type task, AocTask? aocTaskAttribute, string filePath)
         {
-            var warmUprounds = 20;
+            var warmUprounds = 2;
             for (var i = 1; i <= warmUprounds; i++)
             {
                 Console.WriteLine($"Warming up for {task.Name}({aocTaskAttribute?.Year}/{aocTaskAttribute?.Day}) round {i}/{warmUprounds}");

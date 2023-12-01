@@ -11,8 +11,6 @@ namespace AdventOfCode.AocTasks2022
         public string Sol1 { get; set; }
         public string Sol2 { get; set; }
         public List<string> Lines { get; set; }
-//        public List<string> Lines2 { get; set; }
-
         public Trebuchet(string filePath)
         {
             FilePath = filePath;
@@ -28,25 +26,22 @@ namespace AdventOfCode.AocTasks2022
             foreach (var line in Lines)
             {
                 List<int> foundDigits = GetDigits(line, false);
-                totalCalibration += int.Parse(foundDigits.First().ToString() + foundDigits.Last().ToString());
+                totalCalibration += foundDigits[0]*10 + foundDigits[foundDigits.Count - 1];
             }
             Sol1 = totalCalibration.ToString();
             return Sol1;
         }
-
         string IAocTask.Solve2()
         {
             var totalCalibration = 0;
             foreach (var line in Lines)
             {
                 List<int> foundDigits = GetDigits(line,true);
-                var calibration = foundDigits.First().ToString() + foundDigits.Last().ToString();
-                totalCalibration += int.Parse(foundDigits.First().ToString() + foundDigits.Last().ToString());
+                totalCalibration += foundDigits[0] * 10 + foundDigits[foundDigits.Count - 1];
             }
             Sol2=totalCalibration.ToString();
             return Sol2;
         }
-
         private static List<int> GetDigits(string line,bool searchText)
         {
             var digits = new string[] { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
