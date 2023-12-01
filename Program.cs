@@ -1,4 +1,4 @@
-﻿using AdventOfCode.AocTasks2022;
+﻿using AdventOfCode.AocTasks2023;
 using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
 using BenchmarkDotNet.Attributes;
@@ -18,10 +18,10 @@ namespace AdventOfCode
         private const string AOC_WEB_BASE_URL = "https://adventofcode.com/";
         static void Main(string[] args)
         {
-            
-           //var summary = BenchmarkRunner.Run<Program>();
-           //return;
-           //TODO: ADD cmd line args
+
+            var summary = BenchmarkRunner.Run<Program>();
+            return;
+            //TODO: ADD cmd line args
             var tasks = GetAocTasks().Where(t=>t.GetCustomAttribute<AocTask>()?.Year==2023).ToList();
             Console.WriteLine($"Found {tasks.Count} Aoc Tasks");
             CookieData cookieData = GetCookieFromFile();
@@ -45,7 +45,7 @@ namespace AdventOfCode
         }
 
         [Benchmark()]
-        public static void DoTheBenchmark()
+        public void DoTheBenchmark()
         {
             //var aocTaskAttribute = task.GetCustomAttribute<AocTask>();
             string filePath = $@"D:\Development\AdventOfCodeComplete\bin\Release\net8.0\TaskData\2023_1.txt";
@@ -56,7 +56,6 @@ namespace AdventOfCode
         }
         private static void RunTasks(List<Type> tasks)
         {
-
             foreach (var task in tasks)
             {
                 var aocTaskAttribute = task.GetCustomAttribute<AocTask>();

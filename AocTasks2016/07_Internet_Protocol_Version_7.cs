@@ -23,8 +23,6 @@ namespace AdventOfCode.AocTasks2022
             Input=File.ReadAllLines(filePath);
             Input = ["abba[mnop]qrst", "abcd[bddb]xyyx", "aaaa[qwer]tyui", "ioxxoj[asdfgh]zxcvbn"];
             //Input = new string[] { "vjqhodfzrrqjshbhx[lezezbbswydnjnz]ejcflwytgzvyigz[hjdilpgdyzfkloa]mxtkrysovvotkuyekba" };
-            
-
         }
         public void PrepareData()
         {

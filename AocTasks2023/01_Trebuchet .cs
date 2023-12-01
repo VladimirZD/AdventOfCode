@@ -1,8 +1,9 @@
 ﻿using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
+using System.Diagnostics;
 using System.IO;
 
-namespace AdventOfCode.AocTasks2022
+namespace AdventOfCode.AocTasks2023
 {
     [AocTask(2023, 1)]
     public class Trebuchet(string filePath) : IAocTask
@@ -22,10 +23,12 @@ namespace AdventOfCode.AocTasks2022
             var totalCalibration = 0;
             foreach (var line in Lines)
             {
-                List<int> foundDigits = GetDigits(line, false);
-                totalCalibration += foundDigits[0]*10 + foundDigits[^1];
+                var firstDigit= GetDigit(line, false,0,1);
+                var secondDigit = GetDigit(line, false, line.Length-1, -1);
+                totalCalibration+= firstDigit * 10 + secondDigit;
             }
             Sol1 = totalCalibration.ToString();
+            //Debug.Assert(totalCalibration == 54597);
             return Sol1;
         }
         string IAocTask.Solve2()
@@ -33,35 +36,44 @@ namespace AdventOfCode.AocTasks2022
             var totalCalibration = 0;
             foreach (var line in Lines)
             {
-                List<int> foundDigits = GetDigits(line,true);
-                totalCalibration += foundDigits[0] * 10 + foundDigits[^1];
+                var firstDigit = GetDigit(line, true, 0, 1);
+                var secondDigit = GetDigit(line, true, line.Length - 1, -1);
+                totalCalibration += firstDigit * 10 + secondDigit;
             }
             Sol2=totalCalibration.ToString();
+            //Debug.Assert(totalCalibration == 54504);
             return Sol2;
         }
-        private static List<int> GetDigits(string line,bool searchText)
+        private static int GetDigit(string line, bool searchText,int startIndex, int step)
         {
             var digits = new string[] { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
             var foundDigits = new List<int>();
-            for (var i = 0; i < line.Length; i++)
+            var retValue = 0;
+            for (var i = startIndex; i < line.Length; i+=step)
             {
                 if (char.IsDigit(line[i]))
                 {
                     foundDigits.Add(line[i] - '0');
+                    retValue = line[i] - '0';
                 }
                 else if (searchText)
                 {
                     for (var j = 0; j < digits.Length; j++)
                     {
-                        
-                        if (line[i..].StartsWith(digits[j], StringComparison.InvariantCultureIgnoreCase))
+                        var pattern = line[i..];
+                        if (pattern.Length>=digits[j].Length && pattern.StartsWith(digits[j], StringComparison.InvariantCultureIgnoreCase))
                         {
-                            foundDigits.Add(j + 1);
+                            retValue = j + 1;
+                            break;
                         }
                     }
                 }
+                if (retValue != 0)
+                {
+                    break;
+                }
             }
-            return foundDigits;
+            return retValue;
         }
     }
 }
