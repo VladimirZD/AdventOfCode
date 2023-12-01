@@ -21,6 +21,7 @@ namespace AdventOfCode
             
            //var summary = BenchmarkRunner.Run<Program>();
            //return;
+           //TODO: ADD cmd line args
             var tasks = GetAocTasks().Where(t=>t.GetCustomAttribute<AocTask>()?.Year==2023).ToList();
             Console.WriteLine($"Found {tasks.Count} Aoc Tasks");
             CookieData cookieData = GetCookieFromFile();
@@ -44,7 +45,7 @@ namespace AdventOfCode
         }
 
         [Benchmark()]
-        public void DoTheBenchmark()
+        public static void DoTheBenchmark()
         {
             //var aocTaskAttribute = task.GetCustomAttribute<AocTask>();
             string filePath = $@"D:\Development\AdventOfCodeComplete\bin\Release\net8.0\TaskData\2023_1.txt";
@@ -98,24 +99,6 @@ namespace AdventOfCode
                 }
             }
         }
-        private static void DoWarmUp(Type task, AocTask? aocTaskAttribute, string filePath)
-        {
-            var warmUprounds = 2;
-            for (var i = 1; i <= warmUprounds; i++)
-            {
-                Console.WriteLine($"Warming up for {task.Name}({aocTaskAttribute?.Year}/{aocTaskAttribute?.Day}) round {i}/{warmUprounds}");
-                Console.CursorTop--;
-                var instance = (Activator.CreateInstance(task, filePath) as IAocTask);
-                if (instance != null)
-                {
-                    instance.PrepareData();
-                    _ = instance.Solve1();
-                    _ = instance.Solve2();
-
-                }
-            }
-            Console.CursorTop++;
-        }
         private static string GetFormatedElapsed(TimeSpan time)
         {
             var formatedValue = $"{time.TotalMicroseconds} µs";
@@ -136,7 +119,7 @@ namespace AdventOfCode
         static List<System.Type> GetAocTasks()
         {
             var types = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsDefined(typeof(AocTask)));
-            return types.OrderBy(t => t.GetCustomAttribute<AocTask>()?.Year).ThenBy(t => t.GetCustomAttribute<AocTask>()?.Day).ToList();
+            return [.. types.OrderBy(t => t.GetCustomAttribute<AocTask>()?.Year).ThenBy(t => t.GetCustomAttribute<AocTask>()?.Day)];
         }
         public static async Task<string> GenerateTaskDataFile(string url, CookieData cookieData)
         {

@@ -5,16 +5,13 @@ using System.IO;
 namespace AdventOfCode.AocTasks2022
 {
     [AocTask(2023, 1)]
-    public class Trebuchet : IAocTask
+    public class Trebuchet(string filePath) : IAocTask
     {
-        public string FilePath { get; set; }
+        public string FilePath { get; set; } = filePath;
         public string Sol1 { get; set; }
         public string Sol2 { get; set; }
         public List<string> Lines { get; set; }
-        public Trebuchet(string filePath)
-        {
-            FilePath = filePath;
-        }
+
         public void PrepareData()
         {
             var textData = File.ReadAllText(FilePath);
@@ -26,7 +23,7 @@ namespace AdventOfCode.AocTasks2022
             foreach (var line in Lines)
             {
                 List<int> foundDigits = GetDigits(line, false);
-                totalCalibration += foundDigits[0]*10 + foundDigits[foundDigits.Count - 1];
+                totalCalibration += foundDigits[0]*10 + foundDigits[^1];
             }
             Sol1 = totalCalibration.ToString();
             return Sol1;
@@ -37,7 +34,7 @@ namespace AdventOfCode.AocTasks2022
             foreach (var line in Lines)
             {
                 List<int> foundDigits = GetDigits(line,true);
-                totalCalibration += foundDigits[0] * 10 + foundDigits[foundDigits.Count - 1];
+                totalCalibration += foundDigits[0] * 10 + foundDigits[^1];
             }
             Sol2=totalCalibration.ToString();
             return Sol2;

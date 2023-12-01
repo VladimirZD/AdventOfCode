@@ -21,7 +21,7 @@ namespace AdventOfCode.AocTasks2022
         {
             FilePath = filePath;
             Input=File.ReadAllLines(filePath);
-             Input = new string[] { "abba[mnop]qrst", "abcd[bddb]xyyx", "aaaa[qwer]tyui", "ioxxoj[asdfgh]zxcvbn" };
+            Input = ["abba[mnop]qrst", "abcd[bddb]xyyx", "aaaa[qwer]tyui", "ioxxoj[asdfgh]zxcvbn"];
             //Input = new string[] { "vjqhodfzrrqjshbhx[lezezbbswydnjnz]ejcflwytgzvyigz[hjdilpgdyzfkloa]mxtkrysovvotkuyekba" };
             
 
@@ -44,7 +44,7 @@ namespace AdventOfCode.AocTasks2022
         {
             return;
             /*part 1 works, part 2 never finished*/
-
+            //TODO: Finish this!
             var validIps=new List<string>();
             var invalidIPs =new List<string>();
             int supportsTls = 0;
