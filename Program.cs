@@ -19,8 +19,8 @@ namespace AdventOfCode
         static void Main(string[] args)
         {
 
-            var summary = BenchmarkRunner.Run<Program>();
-            return;
+            //var summary = BenchmarkRunner.Run<Program>();
+            //return;
             //TODO: ADD cmd line args
             var tasks = GetAocTasks().Where(t=>t.GetCustomAttribute<AocTask>()?.Year==2023).ToList();
             Console.WriteLine($"Found {tasks.Count} Aoc Tasks");
@@ -47,9 +47,8 @@ namespace AdventOfCode
         [Benchmark()]
         public void DoTheBenchmark()
         {
-            //var aocTaskAttribute = task.GetCustomAttribute<AocTask>();
-            string filePath = $@"D:\Development\AdventOfCodeComplete\bin\Release\net8.0\TaskData\2023_1.txt";
-            var solver = (IAocTask) new Trebuchet(filePath) ;
+            string filePath = $@"D:\Development\AdventOfCodeComplete\bin\Release\net8.0\TaskData\2023_2.txt";
+            var solver = (IAocTask) new Cube_Conundrum(filePath) ;
             solver.PrepareData();
             _= solver.Solve1();
             _= solver.Solve2();
