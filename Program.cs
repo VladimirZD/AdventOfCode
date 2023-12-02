@@ -8,6 +8,8 @@ using System.Net;
 using System.Reflection;
 using static AdventOfCode.SessionExtractor;
 using BenchmarkDotNet.Running;
+using CommandLine;
+
 
 namespace AdventOfCode
 {
@@ -15,13 +17,19 @@ namespace AdventOfCode
     public class Program
     {
         private const string AOC_WEB_BASE_URL = "https://adventofcode.com/";
+        public int Year { get; set; }
+        public int Day { get; set; }  
         static void Main(string[] args)
         {
 
             //var summary = BenchmarkRunner.Run<Program>();
             //return;
-            //TODO: ADD cmd line args
-            var tasks = GetAocTasks().Where(t=>t.GetCustomAttribute<AocTask>()?.Year==2023).ToList();
+            var cmdLineOptions = ParseCmdLine(args);
+            var tasks = GetAocTasks()
+                .Where(t =>
+                (cmdLineOptions.Year == 0 || t.GetCustomAttribute<AocTask>()?.Year == cmdLineOptions.Year) &&
+                (cmdLineOptions.Day == 0 || t.GetCustomAttribute<AocTask>()?.Day == cmdLineOptions.Day))
+                .ToList();
             Console.WriteLine($"Found {tasks.Count} Aoc Tasks");
             CookieData cookieData = GetCookieFromFile();
             if (ValidateCookie(cookieData))
@@ -35,6 +43,18 @@ namespace AdventOfCode
             }
             RunTasks(tasks);
         }
+
+        private static CmdLineOptions ParseCmdLine(string[] args)
+        {
+            var result = Parser.Default.ParseArguments<CmdLineOptions>(args);
+            result.WithNotParsed(errs =>
+            {
+                Console.WriteLine($"Failed with errors:\n\t{String.Join("\n\t", errs)}");
+                Environment.Exit(1);
+            });
+            return result.Value;
+        }
+
         private static CookieData GetCookieFromFile()
         {
             var cookieData = new CookieData();
@@ -46,11 +66,11 @@ namespace AdventOfCode
         [Benchmark()]
         public void DoTheBenchmark()
         {
-            string filePath =Path.Combine(Program.GetTasksFolder(),"2023_2.txt");
-            var solver = (IAocTask) new Cube_Conundrum(filePath) ;
+            string filePath = Path.Combine(Program.GetTasksFolder(), "2023_2.txt");
+            var solver = (IAocTask)new Cube_Conundrum(filePath);
             solver.PrepareData();
-            _= solver.Solve1();
-            _= solver.Solve2();
+            _ = solver.Solve1();
+            _ = solver.Solve2();
         }
         private static void RunTasks(List<Type> tasks)
         {
@@ -59,7 +79,7 @@ namespace AdventOfCode
                 var aocTaskAttribute = task.GetCustomAttribute<AocTask>();
                 if (aocTaskAttribute != null)
                 {
-                    string filePath = Path.Combine(GetTasksFolder(),$"{aocTaskAttribute.Year}_{aocTaskAttribute.Day}.txt");
+                    string filePath = Path.Combine(GetTasksFolder(), $"{aocTaskAttribute.Year}_{aocTaskAttribute.Day}.txt");
                     if (File.Exists(filePath))
                     {
                         DoFinalRun(task, aocTaskAttribute, filePath);
@@ -147,7 +167,7 @@ namespace AdventOfCode
         }
         private static void DownloadTaskData(List<System.Type> tasks, CookieData cookieData)
         {
-            Console.WriteLine($@"Downloading task data to folder {GetTasksFolder()}TaskData");
+            Console.WriteLine($@"Downloading task data to folder {GetTasksFolder()}");
             Directory.CreateDirectory(GetTasksFolder());
             foreach (var task in tasks)
             {
@@ -155,7 +175,7 @@ namespace AdventOfCode
                 Console.Write($"\tDownloading task data: {task.Name}...");
                 if (aocTaskAttribute != null)
                 {
-                    
+
                     var fileName = $"{aocTaskAttribute.Year}_{aocTaskAttribute.Day}.txt";
                     string filePath = Path.Combine(GetTasksFolder(), fileName);
                     string msg = $"File {fileName} exist, skipping download";
@@ -174,8 +194,7 @@ namespace AdventOfCode
         }
         private static string GetTasksFolder()
         {
-            return $@"{Path.GetTempPath()}\AocComplete\TaskData\";
+            return $@"{Path.GetTempPath()}AocComplete\TaskData\";
         }
-        
     }
 }
