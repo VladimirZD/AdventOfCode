@@ -3,12 +3,11 @@ using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Jobs;
-using BenchmarkDotNet.Running;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
-using System.Threading.Tasks;
 using static AdventOfCode.SessionExtractor;
+using BenchmarkDotNet.Running;
 
 namespace AdventOfCode
 {
@@ -47,7 +46,7 @@ namespace AdventOfCode
         [Benchmark()]
         public void DoTheBenchmark()
         {
-            string filePath = $@"D:\Development\AdventOfCodeComplete\bin\Release\net8.0\TaskData\2023_2.txt";
+            string filePath =Path.Combine(Program.GetTasksFolder(),"2023_2.txt");
             var solver = (IAocTask) new Cube_Conundrum(filePath) ;
             solver.PrepareData();
             _= solver.Solve1();
@@ -60,7 +59,7 @@ namespace AdventOfCode
                 var aocTaskAttribute = task.GetCustomAttribute<AocTask>();
                 if (aocTaskAttribute != null)
                 {
-                    string filePath = $@"{AppContext.BaseDirectory}TaskData\{aocTaskAttribute.Year}_{aocTaskAttribute.Day}.txt";
+                    string filePath = Path.Combine(GetTasksFolder(),$"{aocTaskAttribute.Year}_{aocTaskAttribute.Day}.txt");
                     if (File.Exists(filePath))
                     {
                         DoFinalRun(task, aocTaskAttribute, filePath);
@@ -148,15 +147,17 @@ namespace AdventOfCode
         }
         private static void DownloadTaskData(List<System.Type> tasks, CookieData cookieData)
         {
-            Console.WriteLine($@"Downloading task data to folder {AppContext.BaseDirectory}TaskData");
+            Console.WriteLine($@"Downloading task data to folder {GetTasksFolder()}TaskData");
+            Directory.CreateDirectory(GetTasksFolder());
             foreach (var task in tasks)
             {
                 var aocTaskAttribute = task.GetCustomAttribute<AocTask>();
                 Console.Write($"\tDownloading task data: {task.Name}...");
                 if (aocTaskAttribute != null)
                 {
+                    
                     var fileName = $"{aocTaskAttribute.Year}_{aocTaskAttribute.Day}.txt";
-                    string filePath = $@"{AppContext.BaseDirectory}TaskData\{fileName}";
+                    string filePath = Path.Combine(GetTasksFolder(), fileName);
                     string msg = $"File {fileName} exist, skipping download";
                     if (!File.Exists(filePath))
                     {
@@ -171,5 +172,10 @@ namespace AdventOfCode
                 }
             }
         }
+        private static string GetTasksFolder()
+        {
+            return $@"{Path.GetTempPath()}\AocComplete\TaskData\";
+        }
+        
     }
 }
