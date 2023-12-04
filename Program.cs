@@ -22,8 +22,8 @@ namespace AdventOfCode
         static void Main(string[] args)
         {
 
-            var summary = BenchmarkRunner.Run<Program>();
-            return;
+            //var summary = BenchmarkRunner.Run<Program>();
+            //return;
             var cmdLineOptions = ParseCmdLine(args);
             List<Type> tasks = GetAocTasks(cmdLineOptions);
             Console.WriteLine($"Found {tasks.Count} Aoc Tasks");
@@ -71,8 +71,8 @@ namespace AdventOfCode
         [Benchmark()]
         public void DoTheBenchmark()
         {
-            string filePath = Path.Combine(Program.GetTasksFolder(), "2023_3.txt");
-            var solver = (IAocTask)new Gear_Ratios(filePath);
+            string filePath = Path.Combine(Program.GetTasksFolder(), "2023_4.txt");
+            var solver = (IAocTask)new Scratchcards(filePath);
             solver.PrepareData();
             _ = solver.Solve1();
             _ = solver.Solve2();
