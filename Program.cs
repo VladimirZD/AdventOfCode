@@ -18,18 +18,14 @@ namespace AdventOfCode
     {
         private const string AOC_WEB_BASE_URL = "https://adventofcode.com/";
         public int Year { get; set; }
-        public int Day { get; set; }  
+        public int Day { get; set; }
         static void Main(string[] args)
         {
 
-            //var summary = BenchmarkRunner.Run<Program>();
-            //return;
+            var summary = BenchmarkRunner.Run<Program>();
+            return;
             var cmdLineOptions = ParseCmdLine(args);
-            var tasks = GetAocTasks()
-                .Where(t =>
-                (cmdLineOptions.Year == 0 || t.GetCustomAttribute<AocTask>()?.Year == cmdLineOptions.Year) &&
-                (cmdLineOptions.Day == 0 || t.GetCustomAttribute<AocTask>()?.Day == cmdLineOptions.Day))
-                .ToList();
+            List<Type> tasks = GetAocTasks(cmdLineOptions);
             Console.WriteLine($"Found {tasks.Count} Aoc Tasks");
             CookieData cookieData = GetCookieFromFile();
             if (ValidateCookie(cookieData))
@@ -42,6 +38,15 @@ namespace AdventOfCode
                 Console.WriteLine($"Session cookie is invalid. Can't download task imput. Will skip tasks with no input.");
             }
             RunTasks(tasks);
+        }
+
+        private static List<Type> GetAocTasks(CmdLineOptions cmdLineOptions)
+        {
+            return GetAocTasks()
+                            .Where(t =>
+                            (cmdLineOptions.Year == 0 || t.GetCustomAttribute<AocTask>()?.Year == cmdLineOptions.Year) &&
+                            (cmdLineOptions.Day == 0 || t.GetCustomAttribute<AocTask>()?.Day == cmdLineOptions.Day))
+                            .ToList();
         }
 
         private static CmdLineOptions ParseCmdLine(string[] args)
@@ -66,8 +71,8 @@ namespace AdventOfCode
         [Benchmark()]
         public void DoTheBenchmark()
         {
-            string filePath = Path.Combine(Program.GetTasksFolder(), "2023_2.txt");
-            var solver = (IAocTask)new Cube_Conundrum(filePath);
+            string filePath = Path.Combine(Program.GetTasksFolder(), "2023_3.txt");
+            var solver = (IAocTask)new Gear_Ratios(filePath);
             solver.PrepareData();
             _ = solver.Solve1();
             _ = solver.Solve2();
