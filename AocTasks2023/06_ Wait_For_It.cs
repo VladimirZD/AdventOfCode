@@ -39,7 +39,6 @@ namespace AdventOfCode.AocTasks2023
         string IAocTask.Solve1()
         {
             var result = 1L;
-            var test = 1L;
             for (int i = 0; i < Races.Count; i++)
             {
                 RaceData race = Races[i];
