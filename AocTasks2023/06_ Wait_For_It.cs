@@ -5,6 +5,7 @@ using Microsoft.Diagnostics.Runtime.Utilities;
 using Microsoft.Diagnostics.Tracing.Parsers;
 using Microsoft.Diagnostics.Tracing.Parsers.Kernel;
 using System.Diagnostics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AdventOfCode.AocTasks2023
 {
@@ -36,24 +37,70 @@ namespace AdventOfCode.AocTasks2023
         }
         string IAocTask.Solve1()
         {
-            var result = 1;
-            
+            var result = 1L;
+            var test = 1L;
             for (int i = 0; i < Races.Count; i++)
             {
                 RaceData race = Races[i];
-                int winCnt = GetWinVariantsCount(race);
-                if (winCnt > 0)
-                {
-                    result = result * winCnt;
-                }
+                result *= GetWinCount(race);
+                //int winCnt = GetWinVariantsCount(race);
+                //if (winCnt > 0)
+                //{
+                //    result = result * winCnt;
+                //}
             }
             Sol1 = result.ToString();
             Debug.Assert((Sol1 == "288") || (Sol1 == "2449062"));
             return Sol1;
         }
+        private static long GetWinCount(RaceData race)
+        {
+            var winCnt = 0;
+            var high = race.Time;
+            var low = 0L;
+            var win = false;
+            var mid = 0L;
+            while (true)
+            {
+                mid = low + (high - low) / 2;
+                var dist = mid * (race.Time - mid);
+                if (dist<=race.Distance && ((mid+1) * (race.Time - mid-1) > race.Distance))
+                {
+                    break;
+                }
+                else if (dist>race.Distance)
+                {
+                    high = mid;
+                } 
+                else
+                {
+                    low = mid;
+                }
+            }
+            var start = mid + 1;
+            var end = race.Time - start;
+
+            return end-start+1;
+            //for (var t = 1; t <= race.Time; t++)
+            //{
+            //    if (t * (race.Time - t) > race.Distance)
+            //    {
+            //        winCnt++;
+            //    }
+            //    else if (winCnt > 0)
+            //    {
+            //        //There is point when we start winning, and we are winning for time x, after we loose first one we can stop search...
+            //        break;
+            //    }
+
+            //    //Console.WriteLine($"Time passed {t}, Result: {t * (race.Time - t) > race.Distance} ");
+            //}
+            //return winCnt;
+        }
         private static int GetWinVariantsCount(RaceData race)
         {
-            
+
+            Console.WriteLine($"--------------------------------------------------------");
             var winCnt = 0;
             for (var t = 1; t <= race.Time; t++)
             {
@@ -64,16 +111,17 @@ namespace AdventOfCode.AocTasks2023
                 else if (winCnt > 0)
                 {
                     //There is point when we start winning, and we are winning for time x, after we loose first one we can stop search...
-                    break;
+                    //break;
                 }
-
-                //Console.WriteLine($"Time passed {t}, Result: {t * (race.Time - t) > race.Distance} ");
+                var check = t * (race.Time - t) > race.Distance;
+                //Console.WriteLine($"Time passed {t}, Result: {check}");
             }
             return winCnt;
         }
         string IAocTask.Solve2()
         {
-            var wincnt = GetWinVariantsCount(Race);
+            var wincnt = GetWinCount(Race); //GetWinVariantsCount(Race);
+            //var test = GetWinCount(Race);
             Sol2 = wincnt.ToString();
             Debug.Assert((Sol2 == "71503") || (Sol2 == "33149631"));
             return Sol2;
