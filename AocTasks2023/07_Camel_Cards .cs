@@ -1,14 +1,7 @@
 ﻿using AdventOfCode.Attributes;
 using AdventOfCode.Interfaces;
-using BenchmarkDotNet.Validators;
 using Microsoft.CodeAnalysis;
-using Microsoft.Diagnostics.Runtime.Utilities;
-using Microsoft.Diagnostics.Tracing.Parsers;
-using Microsoft.Diagnostics.Tracing.Parsers.Kernel;
-using Newtonsoft.Json.Linq;
 using System.Diagnostics;
-using System.Reflection.Metadata;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace AdventOfCode.AocTasks2023
 {
@@ -23,8 +16,6 @@ namespace AdventOfCode.AocTasks2023
 
         private struct Hand { public string Cards; public string Cards2; public int Bid; public int Score; public int Score2; }
         private List<Hand> Hands;
-        private List<Hand> Hands2;
-
 
         public void PrepareData()
         {
@@ -70,7 +61,7 @@ namespace AdventOfCode.AocTasks2023
 
             var winings = Hands.Select((hand, index) => hand.Bid * (index + 1)).Sum();
             Sol1 = winings.ToString();
-            Debug.Assert((Sol1 == "6440") || (Sol1 == "249726565") || (Sol1 == "6592") );
+            Debug.Assert((Sol1 == "6440") || (Sol1 == "249726565") );
             return Sol1;
         }
         public int GetHandStrength(string hand)
@@ -112,7 +103,6 @@ namespace AdventOfCode.AocTasks2023
             {
                 List<int> values1 = hand1.Select(c => cardValues[c]).ToList();
                 List<int> values2 = hand2.Select(c => cardValues[c]).ToList();
-
                 for (int i = 0; i < values1.Count; i++)
                 {
                     if (values1[i] != values2[i])
