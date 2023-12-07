@@ -71,8 +71,8 @@ namespace AdventOfCode
         [Benchmark()]
         public void DoTheBenchmark()
         {
-            string filePath = Path.Combine(Program.GetTasksFolder(), "2023_6.txt");
-            var solver = (IAocTask)new Wait_For_It(filePath);
+            string filePath = Path.Combine(Program.GetTasksFolder(), "2023_7.txt");
+            var solver = (IAocTask)new Camel_Cards(filePath);
             solver.PrepareData();
             _ = solver.Solve1();
             _ = solver.Solve2();

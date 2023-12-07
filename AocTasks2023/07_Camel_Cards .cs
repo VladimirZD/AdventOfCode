@@ -26,20 +26,8 @@ namespace AdventOfCode.AocTasks2023
             {
                 var parts = item.Split(" ");
                 var hand = new Hand();
-                var cards = new Dictionary<char, int>();
                 hand.Bid = int.Parse(parts[1]);
-                for (int i = 0; i < parts[0].Length; i++)
-                {
-                    char part = parts[0][i];
-                    if (cards.ContainsKey(part))
-                    {
-                        cards[part] = cards[part] + 1;
-                    }
-                    else
-                    {
-                        cards.Add(part, 1);
-                    }
-                }
+                
                 hand.Cards = parts[0];
                 hand.Score = GetHandStrength(hand.Cards);
                 hand.Cards2= GetJokerHand(hand);
