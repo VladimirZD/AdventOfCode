@@ -25,11 +25,9 @@ namespace AdventOfCode.AocTasks2023
             //textData = "Time:      7  15   30\nDistance:  9  40  200".Split("\n", StringSplitOptions.RemoveEmptyEntries);
             var times = textData[0][13..].Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(i => int.Parse(i)).ToArray();
             var distances = textData[1][12..].Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(i => int.Parse(i)).ToArray();
-            
             var time = long.Parse(textData[0][13..].Replace(" ", ""));
             var distance = long.Parse(textData[1][12..].Replace(" ", ""));
             Race = new RaceData { Time = time, Distance = distance };
-            
             for (var i = 0; i < times.Length; i++)
             {
                 var raceData = new RaceData { Time = times[i], Distance = distances[i] };
