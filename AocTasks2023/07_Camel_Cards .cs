@@ -20,8 +20,10 @@ namespace AdventOfCode.AocTasks2023
         public string Sol2 { get; set; }
         private Dictionary<char, int> CardValues1 = new Dictionary<char, int> { { 'A', 14 }, { 'K', 13 }, { 'Q', 12 }, { 'J', 11 }, { 'T', 10 }, { '9', 9 }, { '8', 8 }, { '7', 7 }, { '6', 6 }, { '5', 5 }, { '4', 4 }, { '3', 3 }, { '2', 2 } };
         private Dictionary<char, int> CardValues2 = new Dictionary<char, int> { { 'A', 14 }, { 'K', 13 }, { 'Q', 12 }, { 'T', 10 }, { '9', 9 }, { '8', 8 }, { '7', 7 }, { '6', 6 }, { '5', 5 }, { '4', 4 }, { '3', 3 }, { '2', 2 }, { 'J', 1 } };
+
         private struct Hand { public string Cards; public string Cards2; public int Bid; public int Score; public int Score2; }
         private List<Hand> Hands;
+        private List<Hand> Hands2;
 
 
         public void PrepareData()
@@ -51,7 +53,6 @@ namespace AdventOfCode.AocTasks2023
                 hand.Score = GetHandStrength(hand.Cards);
                 hand.Cards2= GetJokerHand(hand);
                 hand.Score2 = GetHandStrength(hand.Cards2);
-
                 Hands.Add(hand);
             }
         }
@@ -69,7 +70,7 @@ namespace AdventOfCode.AocTasks2023
 
             var winings = Hands.Select((hand, index) => hand.Bid * (index + 1)).Sum();
             Sol1 = winings.ToString();
-            Debug.Assert((Sol1 == "6440") || (Sol1 == "249726565"));
+            Debug.Assert((Sol1 == "6440") || (Sol1 == "249726565") || (Sol1 == "6592") );
             return Sol1;
         }
         public int GetHandStrength(string hand)
@@ -138,7 +139,6 @@ namespace AdventOfCode.AocTasks2023
             Debug.Assert((Sol2 == "5905") || (Sol2 == "251135960"));
             return Sol2;
         }
-
         private string GetJokerHand(Hand hand)
         {
             var retValue = hand.Cards;
@@ -147,6 +147,7 @@ namespace AdventOfCode.AocTasks2023
                 var cardToAdd = hand.Cards.Where(c => c != 'J').GroupBy(c => c).OrderByDescending(g => g.Count()).Select(g => g.Key).FirstOrDefault('J');
                 retValue = hand.Cards.Replace('J', cardToAdd);
             }
+            return retValue;
         }
     }
 }
