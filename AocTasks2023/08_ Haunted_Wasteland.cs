@@ -83,23 +83,33 @@ namespace AdventOfCode.AocTasks2023
                 var stepCount = DoTheWalk(CurrentCaves.Skip(i).Take(1).ToList(), checkFunction);
                 individualSteps[i]=stepCount;
             }
-            BigInteger lcm = LCM(individualSteps);
+            long lcm = GetLcmForArray(individualSteps);
             Sol2 = lcm.ToString();
             Debug.Assert((Sol2 == "5905") || (Sol2 == "8811050362409"));
             return Sol2;
         }
-        static BigInteger LCM(long[] numbers)
+        static long GetLcmForArray(long[] numbers)
         {
-            BigInteger lcm = 1;
+            long lcm = 1;
             for (int i = 0; i < numbers.Length; i++)
             {
                 lcm = LCM(lcm, numbers[i]);
             }
             return lcm;
         }
-        static BigInteger LCM(BigInteger a, BigInteger b)
+        static long LCM(long a, long b)
         {
-            return (a / BigInteger.GreatestCommonDivisor(a, b)) * b;
+            return (a / GCD(a, b)) * b;
+        }
+        static long GCD(long a, long b)
+        {
+            while (b != 0)
+            {
+                long reminder = b;
+                b = a % b;
+                a = reminder;
+            }
+            return a;
         }
     }
 }
