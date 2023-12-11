@@ -3,6 +3,7 @@ using AdventOfCode.Interfaces;
 using Microsoft.CodeAnalysis;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Linq;
 
 namespace AdventOfCode.AocTasks2023
 {
@@ -83,9 +84,9 @@ namespace AdventOfCode.AocTasks2023
                         goodCaves++;
                     }
                 }
-                if (goodCaves > 3)
+                if (goodCaves > 2)
                 {
-                    Console.WriteLine($"Found good caves {goodCaves} at step {stepCount}");
+                    Console.WriteLine($"Found good caves {goodCaves} at step {stepCount} all caves {string.Join(", ", newCaves.ToArray())}");
                 }   
                 instructionIndex++;
                 instructionIndex %= Instructions.Length;
