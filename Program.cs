@@ -71,8 +71,8 @@ namespace AdventOfCode
         [Benchmark()]
         public void DoTheBenchmark()
         {
-            string filePath = Path.Combine(Program.GetTasksFolder(), "2023_8.txt");
-            var solver = (IAocTask)new Haunted_Wasteland(filePath);
+            string filePath = Path.Combine(Program.GetTasksFolder(), "2023_9.txt");
+            var solver = (IAocTask)new Mirage_Maintenance(filePath);
             solver.PrepareData();
             _ = solver.Solve1();
             _ = solver.Solve2();
