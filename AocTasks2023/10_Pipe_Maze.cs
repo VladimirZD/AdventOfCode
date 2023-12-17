@@ -2,11 +2,6 @@
 using AdventOfCode.Interfaces;
 using Microsoft.CodeAnalysis;
 using System.Diagnostics;
-using static System.Reflection.Metadata.BlobBuilder;
-using System.Numerics;
-using BenchmarkDotNet.Disassemblers;
-using Microsoft.Diagnostics.Runtime.Utilities;
-using Org.BouncyCastle.Math.EC;
 
 namespace AdventOfCode.AocTasks2023
 {
@@ -19,7 +14,6 @@ namespace AdventOfCode.AocTasks2023
             public int X { get; set; }
             public int Y { get; set; }
             public char Value { get; set; }
-            public bool HasAnimal { get; set; }
             public int Distance { get; set; }
         }
         public string FilePath { get; set; } = filePath;
@@ -52,22 +46,21 @@ namespace AdventOfCode.AocTasks2023
             ////textData= "7-F7-\r\n.FJ|7\r\nSJLL7\r\n|F--J\r\nLJ.LJ".Replace("\r", "").Split("\n", StringSplitOptions.RemoveEmptyEntries);
             //textData = "...........\r\n.S-------7.\r\n.|F-----7|.\r\n.||.....||.\r\n.||.....||.\r\n.|L-7.F-J|.\r\n.|..|.|..|.\r\n.L--J.L--J.\r\n...........".Replace("\r", "").Split("\n", StringSplitOptions.RemoveEmptyEntries);
             //textData= ".F----7F7F7F7F-7....\r\n.|F--7||||||||FJ....\r\n.||.FJ||||||||L7....\r\nFJL7L7LJLJ||LJ.L-7..\r\nL--J.L7...LJS7F-7L7.\r\n....F-J..F7FJ|L7L7L7\r\n....L7.F7||L7|.L7L7|\r\n.....|FJLJ|FJ|F7|.LJ\r\n....FJL-7.||.||||...\r\n....L---J.LJ.LJLJ...".Replace("\r", "").Split("\n", StringSplitOptions.RemoveEmptyEntries);
-            //textData= "FF7FSF7F7F7F7F7F---7\r\nL|LJ||||||||||||F--J\r\nFL-7LJLJ||||||LJL-77\r\nF--JF--7||LJLJ7F7FJ-\r\nL---JF-JLJ.||-FJLJJ7\r\n|F|F-JF---7F7-L7L|7|\r\n|FFJF7L7F-JF7|JL---7\r\n7-L-JL7||F7|L7F-7F7|\r\nL.L7LFJ|||||FJL7||LJ\r\nL7JLJL-JLJLJL--JLJ.L".Replace("\r", "").Split("\n", StringSplitOptions.RemoveEmptyEntries);
+            //textData = "FF7FSF7F7F7F7F7F---7\r\nL|LJ||||||||||||F--J\r\nFL-7LJLJ||||||LJL-77\r\nF--JF--7||LJLJ7F7FJ-\r\nL---JF-JLJ.||-FJLJJ7\r\n|F|F-JF---7F7-L7L|7|\r\n|FFJF7L7F-JF7|JL---7\r\n7-L-JL7||F7|L7F-7F7|\r\nL.L7LFJ|||||FJL7||LJ\r\nL7JLJL-JLJLJL--JLJ.L".Replace("\r", "").Split("\n", StringSplitOptions.RemoveEmptyEntries);
             Width = textData[0].Length;
             Height = textData.Length;
             for (var y = 0; y < textData.Length; y++)
             {
                 for (var x = 0; x < textData[y].Length; x++)
                 {
-                    var hasAnimal = textData[y][x] == 'S' ? true : false;
-                    var cell = new Cell { X = x, Y = y, Value = textData[y][x], HasAnimal = hasAnimal, Distance = -1 };
+                    var cell = new Cell { X = x, Y = y, Value = textData[y][x], Distance = -1 };
                     MapData.Add(cell);
                 }
             }
         }
         private void FollowThePipes()
         {
-            var animalCell = MapData.Where(c => c.HasAnimal).Single();
+            var animalCell = MapData.First(c => c.Value == 'S');
             var queue = new Queue<Cell>();
             animalCell.Distance = 0;
             queue.Enqueue(animalCell);
@@ -75,14 +68,15 @@ namespace AdventOfCode.AocTasks2023
             {
                 var currentCell = queue.Dequeue();
                 var validConnections = Connections[currentCell.Value];
-                foreach (var connection in validConnections)
+                for (int i = 0; i < validConnections.Count; i++)
                 {
+                    CellOfset connection = validConnections[i];
                     var newX = currentCell.X + connection.Dx;
                     var newY = currentCell.Y + connection.Dy;
                     if (IsValidPos(newX, newY))
                     {
-                        var nextCell = MapData.Where(c => c.X == newX && c.Y == newY && c.Distance  <1 && c.Value != '.').SingleOrDefault();
-                        if (nextCell != null)
+                        var nextCell = MapData[newX + newY * Width];
+                        if (nextCell != null && nextCell.Distance<1 && nextCell.Value!='.')
                         {
                             //Is cell conecting to me
                             var cellDirectionAllowed = nextCell != null && Connections[nextCell.Value].Where(c => c.Dx == -connection.Dx && c.Dy == -connection.Dy).Any();
@@ -106,48 +100,45 @@ namespace AdventOfCode.AocTasks2023
             FollowThePipes();
             var row = 0;
             Sol1 = MapData.Max(c => c.Distance).ToString();
-            var d = MapData.OrderByDescending(c => c.Distance).Where(c => c.Distance != -1).ToList();
-            Debug.Assert((Sol1 == "4") || (Sol1 == "8") || (Sol1 == "6599") ||(Sol1=="23"));
+            Debug.Assert((Sol1 == "4") || (Sol1 == "8") || (Sol1 == "6599") || (Sol1 == "23"));
             return Sol1;
         }
         string IAocTask.Solve2()
         {
-            var closedCells = new List<Cell>();
-
-            var cnt = IsInTheLoop(MapData);
+            var cnt = CountTilesInTheLoop();
             Sol2 = cnt.ToString();
             Debug.Assert((Sol2 == "4") || (Sol2 == "477"));
             return Sol2;
         }
 
-        private int IsInTheLoop(List<Cell> mapData)
+        private int CountTilesInTheLoop()
         {
-            var cnt = 0;
-            foreach(var cell in mapData)
+            int cnt = 0;
+            for (int i = 0; i < MapData.Count; i++)
             {
-                if (cell.Distance!=-1)
+                Cell cell = MapData[i];
+                var currentCellIndex = i;
+                if (cell.Distance != -1)
                 {
                     continue;
                 }
                 var clear_right = true;
                 var clear_left = true;
-                var currentX = cell.X;
-                var currentY = cell.Y;
-
-                while (currentY>=0)
+                while (currentCellIndex>= 0)
                 {
-                    var nextCell=mapData.Single(c=>c.X==currentX && c.Y== currentY);
-                    if (nextCell.Distance!=-1 && (nextCell.Value=='L' || nextCell.Value == 'F' || nextCell.Value == '-'))
-                        {
-                            clear_right = !clear_right;
-                        }
-                    if (nextCell.Distance != -1 && (nextCell.Value == '7' || nextCell.Value == 'J' || nextCell.Value == '-'))
-                        {
-                        clear_left= !clear_left;
+                    var nextCell = MapData[currentCellIndex];
+                    
+                    if (nextCell.Distance != -1 && nextCell.Value != 'S' && (nextCell.Value=='L' || nextCell.Value == 'F' || nextCell.Value == '-'))
+                    {
+                        clear_right = !clear_right;
                     }
-                    currentY =currentY-1;
+                    if (nextCell.Distance != -1 && nextCell.Value != 'S' && (nextCell.Value == '7' || nextCell.Value == 'J' || nextCell.Value == '-'))
+                    {
+                        clear_left = !clear_left;
+                    }
+                    currentCellIndex = currentCellIndex - Width;
                 }
-                if (!clear_right && !clear_left) 
+                if (!(clear_right || clear_left))
                 {
                     cnt++;
                 }
