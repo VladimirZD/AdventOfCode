@@ -122,23 +122,23 @@ namespace AdventOfCode.AocTasks2023
                 {
                     continue;
                 }
-                var clear_right = true;
-                var clear_left = true;
+                var clearRight = true;
+                var clearLeft = true;
                 while (currentCellIndex>= 0)
                 {
                     var nextCell = MapData[currentCellIndex];
                     
                     if (nextCell.Distance != -1 && nextCell.Value != 'S' && (nextCell.Value=='L' || nextCell.Value == 'F' || nextCell.Value == '-'))
                     {
-                        clear_right = !clear_right;
+                        clearRight = !clearRight;
                     }
                     if (nextCell.Distance != -1 && nextCell.Value != 'S' && (nextCell.Value == '7' || nextCell.Value == 'J' || nextCell.Value == '-'))
                     {
-                        clear_left = !clear_left;
+                        clearLeft = !clearLeft;
                     }
                     currentCellIndex = currentCellIndex - Width;
                 }
-                if (!(clear_right || clear_left))
+                if (!(clearRight || clearLeft))
                 {
                     cnt++;
                 }
