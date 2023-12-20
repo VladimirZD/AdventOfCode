@@ -20,78 +20,41 @@ namespace AdventOfCode.AocTasks2023
         public List<Point> GalaxyLocations { get; set; }
         public HashSet<int> ColHasGalaxy = new HashSet<int>();
         public HashSet<int> RowHasGalaxy = new HashSet<int>();
-        public Dictionary<int,int> ColumnExpansion = new Dictionary<int,int>();
+        public Dictionary<int, int> ColumnExpansion = new Dictionary<int, int>();
         public Dictionary<int, int> RowExpansion = new Dictionary<int, int>();
 
         //340 ms
         public void PrepareData()
         {
             var textData = File.ReadAllLines(FilePath);
-            GalaxyLocations=new List<Point>();
+            GalaxyLocations = new List<Point>();
             //textData = "...#......\r\n.......#..\r\n#.........\r\n..........\r\n......#...\r\n.#........\r\n.........#\r\n..........\r\n.......#..\r\n#...#.....".Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
-
             var width = textData[0].Length;
             var height = textData.Length;
-            //ColumnExpansion = Enumerable.Range(0, width-1).ToDictionary(key => key, value => 0);
-            RowExpansion = Enumerable.Range(0, height-1).ToDictionary(key => key, value => 0);
             for (int col = 0; col < width; col++)
             {
-                for (int row= 0;row<height; row++)
+                for (int row = 0; row < height; row++)
                 {
-                    if (textData[row][col]=='#')
+                    if (textData[row][col] == '#')
                     {
                         ColHasGalaxy.Add(col);
                         RowHasGalaxy.Add(row);
-                        GalaxyLocations.Add(new Point(col,row));
+                        GalaxyLocations.Add(new Point(col, row));
                     }
                 }
             }
-
-            //RowExpansion = Enumerable.Range(0, height-1).ToDictionary(key => key, value => 0);
             ColumnExpansion = CalculeExpansion(ColHasGalaxy, width);
-            //for (var col= 0;col < width; col++)
-            //{
-            //    if (!ColHasGalaxy.Contains(col))
-            //    {
-            //        for (var j=col+1;j< width; j++)
-            //        {
-            //            if (!ColumnExpansion.ContainsKey(j))
-            //            {
-            //                ColumnExpansion.Add(j, 0);
-            //            }
-            //            ColumnExpansion[j] = ColumnExpansion[j] + 1;
-            //        }
-            //    }
-            //}
             RowExpansion = CalculeExpansion(RowHasGalaxy, height);
-            //for (var row = 0; row < height; row++)
-            //{
-            //    if (!RowHasGalaxy.Contains(row))
-            //    {
-            //        for (var j = row + 1; j < height; j++)
-            //        {
-            //            if (!RowExpansion.ContainsKey(j))
-            //            {
-            //                RowExpansion.Add(j, 0);
-            //            }
-            //            RowExpansion[j] = RowExpansion[j] + 1;
-            //        }
-            //    }
-            //    }
-            }
-        private static Dictionary<int,int> CalculeExpansion(HashSet<int> galaxyLocations,int dictSize)
+        }
+        private static Dictionary<int, int> CalculeExpansion(HashSet<int> galaxyLocations, int dictSize)
         {
-            var dict = Enumerable.Range(0, dictSize- 1).ToDictionary(key => key, value => 0);
+            var dict = Enumerable.Range(0, dictSize).ToDictionary(key => key, value => 0);
             for (var col = 0; col < dictSize; col++)
             {
                 if (!galaxyLocations.Contains(col))
                 {
                     for (var j = col + 1; j < dictSize; j++)
                     {
-                        if (!dict.ContainsKey(j))
-                        {
-                            dict.Add(j, 0);
-                        }
                         dict[j] = dict[j] + 1;
                     }
                 }
@@ -108,9 +71,9 @@ namespace AdventOfCode.AocTasks2023
                 {
                     var origin = GalaxyLocations[i];
                     var destination = GalaxyLocations[j];
-                    var distance = CalculateDsitance(origin,destination,1);
+                    var distance = CalculateDistance(origin, destination, 1);
                     totalDistance1 += distance;
-                    distance = CalculateDsitance(origin, destination, (1000000 - 1));
+                    distance = CalculateDistance(origin, destination, (1000000 - 1));
                     totalDistance2 += distance;
                 }
             }
@@ -119,7 +82,7 @@ namespace AdventOfCode.AocTasks2023
             Debug.Assert((Sol1 == "374") || (Sol1 == "10231178"));
             return Sol1;
         }
-        private long CalculateDsitance(Point origin,Point desitnation,int expansion)
+        private long CalculateDistance(Point origin, Point desitnation, int expansion)
         {
             var sourceX = origin.X;
             var sourceY = origin.Y;
