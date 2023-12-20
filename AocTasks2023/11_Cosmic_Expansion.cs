@@ -48,7 +48,7 @@ namespace AdventOfCode.AocTasks2023
         }
         private long CalculatTotalDistance(int expansion)
         {
-            var galaxyLocations = GalaxyLocations.OrderBy(l => l.Y).ToList();
+            var galaxyLocations = GalaxyLocations;
             var distances = new List<long>();
             var totalDistance = 0L;
             for (var i = 0; i < galaxyLocations.Count - 1; i++)
