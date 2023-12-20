@@ -71,8 +71,8 @@ namespace AdventOfCode
         [Benchmark()]
         public void DoTheBenchmark()
         {
-            string filePath = Path.Combine(Program.GetTasksFolder(), "2023_10.txt");
-            var solver = (IAocTask)new Pipe_Maze(filePath);
+            string filePath = Path.Combine(Program.GetTasksFolder(), "2023_11.txt");
+            var solver = (IAocTask)new Cosmic_Expansion(filePath);
             solver.PrepareData();
             _ = solver.Solve1();
             _ = solver.Solve2();
