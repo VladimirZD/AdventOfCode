@@ -65,7 +65,7 @@ namespace AdventOfCode.AocTasks2024
                 if (Math.Sign(diff) != change || Math.Abs(diff) > 3)
                 {
                     rowSafe = false;
-                    break;
+                    return rowSafe;
                 }
             }
             return rowSafe;

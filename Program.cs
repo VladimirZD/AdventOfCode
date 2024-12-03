@@ -9,11 +9,12 @@ using System.Reflection;
 using static AdventOfCode.SessionExtractor;
 using BenchmarkDotNet.Running;
 using CommandLine;
+using AdventOfCode.AocTasks2024;
 
 
 namespace AdventOfCode
 {
-    [SimpleJob(RuntimeMoniker.Net80)]
+    [SimpleJob(RuntimeMoniker.Net90)]
     public class Program
     {
         private const string AOC_WEB_BASE_URL = "https://adventofcode.com/";
@@ -71,8 +72,8 @@ namespace AdventOfCode
         [Benchmark()]
         public void DoTheBenchmark()
         {
-            string filePath = Path.Combine(Program.GetTasksFolder(), "2023_11.txt");
-            var solver = (IAocTask)new Cosmic_Expansion(filePath);
+            string filePath = Path.Combine(Program.GetTasksFolder(), "2024_2.txt");
+            var solver = (IAocTask)new Red_Nosed_Reports(filePath);
             solver.PrepareData();
             _ = solver.Solve1();
             _ = solver.Solve2();
